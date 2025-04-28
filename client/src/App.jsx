@@ -1,35 +1,83 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+  Navigate,
+} from "react-router-dom";
+import Login from "./pages/Auth/Login";
+import SignUp from "./pages/Auth/SignUp";
+import PrivateRoute from "./routes/PrivateRoute";
+import Dashboard from "./pages/Admin/Dashboard";
+import ManageUsers from "./pages/Admin/ManageUsers";
+import CreateTask from "./pages/Admin/CreateTask";
+import ManageTasks from "./pages/Admin/ManageTasks";
+import DashboardUser from "./pages/User/Dashboard";
+import MyTasks from "./pages/User/MyTasks";
+import ViewTaskDetails from "./pages/User/ViewTaskDetails";
+import UserProvider, { UserContext } from "./context/userContext";
+import { useContext } from "react";
+import { Toaster } from "react-hot-toast";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <>
+    <UserProvider>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <Router>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/sign-up" element={<SignUp />} />
+
+            {/* Admin Routes */}
+            <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
+              <Route path="/admin/dashboard" element={<Dashboard />} />
+              <Route path="/admin/tasks" element={<ManageTasks />} />
+              <Route path="/admin/create-task" element={<CreateTask />} />
+              <Route path="/admin/users" element={<ManageUsers />} />
+            </Route>
+
+            {/* User Routes */}
+            <Route element={<PrivateRoute allowedRoles={["member"]} />}>
+              <Route path="/user/dashboard" element={<DashboardUser />} />
+              <Route path="/user/tasks" element={<MyTasks />} />
+              <Route
+                path="/user/task-details/:id"
+                element={<ViewTaskDetails />}
+              />
+            </Route>
+
+            {/* Default Route */}
+            <Route path="/" element={<Root />} />
+          </Routes>
+        </Router>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+
+      <Toaster
+        toastOptions={{
+          className: "",
+          style: {
+            fontSize: "13px",
+          },
+        }}
+      />
+    </UserProvider>
+  );
 }
 
-export default App
+const Root = () => {
+  const { user, loading } = useContext(UserContext);
+
+  if (loading) {
+    return <Outlet />;
+  }
+
+  if (!user) {
+    return <Navigate to={"/login"} />;
+  }
+
+  return user.role === "adimn" ? (
+    <Navigate to={"/admin/dashboard"} />
+  ) : (
+    <Navigate to={"/user/dashboard"} />
+  );
+};
