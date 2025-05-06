@@ -2,6 +2,7 @@ import express from 'express';
 import { DeathRecord, BirthRecord } from '../models/Record.js';
 import { Hospital } from '../models/Organizations.js';
 import { authorizeAspEmployee, authorizeDspEmployee, authorizeHospitalEmployee, protect } from './AuthRoute.js';
+import { createBirthAnonym, createDeathAnonym } from './AnonymRoute.js';
 
 const router = express.Router();
 
@@ -36,6 +37,8 @@ export const createDeathRecord = async (req, res) => {
     };
 
     const deathRecord = await DeathRecord.create(newRecord);
+
+    createDeathAnonym(newRecord);
 
     res.status(201).json({
       success: true,
@@ -137,6 +140,8 @@ export const createBirthRecord = async (req, res) => {
 
     const birthRecord = await BirthRecord.create(newRecord);
 
+    createBirthAnonym(newRecord);
+
     res.status(201).json({
       success: true,
       data: birthRecord
@@ -212,12 +217,12 @@ router.get('/dsp/birth-record', protect, authorizeDspEmployee, getAllDspBirths);
 const approveRecord = (type) => {
   return async (req, res) => {
     if (type == "death") {
-      const id = req.params.recordId; 
-      await DeathRecord.findByIdAndUpdate(id, { Status: "verified", SignedBy: req.employee._id})
+      const id = req.params.recordId;
+      await DeathRecord.findByIdAndUpdate(id, { Status: "verified", StatusUpdatedBy: req.employee._id })
       return res.status(200).json({ success: true });
     } else {
-      const id = req.params.recordId; 
-      await BirthRecord.findByIdAndUpdate(id, { Status: "verified", SignedBy: req.employee._id})
+      const id = req.params.recordId;
+      await BirthRecord.findByIdAndUpdate(id, { Status: "verified", StatusUpdatedBy: req.employee._id })
       return res.status(200).json({ success: true });
     }
   }
@@ -230,10 +235,10 @@ const rejectRecord = (type) => {
   return async (req, res) => {
     if (type == "death") {
       const id = req.params.recordId;
-      DeathRecord.findByIdAndUpdate(id, { Status: "rejected", SignedBy: req.employee._id })
+      DeathRecord.findByIdAndUpdate(id, { Status: "rejected", StatusUpdatedBy: req.employee._id })
     } else {
-      const id = req.params.recordId; 
-      BirthRecord.findByIdAndUpdate(id, { Status: "rejected", SignedBy: req.employee._id })
+      const id = req.params.recordId;
+      BirthRecord.findByIdAndUpdate(id, { Status: "rejected", StatusUpdatedBy: req.employee._id })
     }
   }
 }

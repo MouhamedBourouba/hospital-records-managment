@@ -25,7 +25,7 @@ const EmployeeSchema = new Schema({
   },
   organizationType: {
     type: String,
-    enum: ["Hospital", "DSP", "ASP", "Court"],
+    enum: ["Hospital", "DSP", "ASP", "Court", "RSH"],
     required: true
   }
 });

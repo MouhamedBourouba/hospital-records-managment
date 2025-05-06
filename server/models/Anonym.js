@@ -35,11 +35,6 @@ const baseAnonym = {
     ref: 'employee',
     required: true,
   },
-  StatusUpdatedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'employee',
-    default: null,
-  },
   Hospital: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "hospital",
@@ -48,71 +43,28 @@ const baseAnonym = {
 }
 
 const AnonymDeathSchema = new mongoose.Schema({
-    BirthDate: {
-        type: Date,
-        default: Date.now,
-    },
-    City: {
-        type: String,
-        required: true,
-    },
-    Wilaya: {
-        type: String,
-        required: true,
-    },
-    Gender: {
-        type: String,
-        enum: ["Male", "Female"],
-        required: true,
-    },
-    SignedBy: {
-        type: String,
-        required: true,
-    },
-    DateOfDeath: {
-        type: Date,
-        default: null,
-    },
-    PlaceOfDeath: {
-        type: String,
-    },
-    CauseOfDeath: {
-        type: String,
-    },
+  ...baseAnonym,
+  DateOfDeath: {
+    type: Date,
+    required: true,
+    validate: {
+      validator: function(value) {
+        return value <= new Date();
+      },
+      message: 'Death date cannot be in the future'
+    }
+  },
+  PlaceOfDeath: {
+    type: String,
+    required: true,
+  },
+  CauseOfDeath: {
+    type: String,
+  },
 })
 
 const AnonymBirthSchema = new mongoose.Schema({
-    BirthDate: {
-        type: Date,
-        default: Date.now,
-    },
-    City: {
-        type: String,
-        required: true,
-    },
-    Wilaya: {
-        type: String,
-        required: true,
-    },
-    Gender: {
-        type: String,
-        enum: ["Male", "Female"],
-        required: true,
-    },
-    SignedBy: {
-        type: String,
-        required: true,
-    },
-    DateOfDeath: {
-        type: Date,
-        default: null,
-    },
-    PlaceOfDeath: {
-        type: String,
-    },
-    CauseOfDeath: {
-        type: String,
-    },
+  ...baseAnonym
 })
 
 export const AnonymDeath = mongoose.model('AnonymDeath', AnonymDeathSchema)

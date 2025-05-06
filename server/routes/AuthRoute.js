@@ -19,6 +19,42 @@ const generateRandomPassword = () => {
   return password;
 };
 
+export const registerResearcherEmployee = async (req, res) => {
+  try {
+    const { fullName, email } = req.body;
+    const employee = req.employee;
+
+    const employeeExists = await Employee.findOne({ email });
+    if (employeeExists) {
+      return res.status(400).json({ message: "Employee already exists" });
+    }
+
+    // todo
+    const hashedPassword = generateRandomPassword();
+    
+    const employeeData = {
+      fullName: fullName,
+      email: email,
+      password: hashedPassword,
+      organization: null,
+      organizationType: "RSH"
+    }
+    const newEmployee = await Employee.create(employeeData);
+
+    sendPasswordEmail(email, hashedPassword);
+
+    res.status(201).json({
+      success: true,
+      employee: {
+        _id: newEmployee._id,
+        ...employeeData
+      },
+      token: generateToken(newEmployee._id),
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 export const registerEmployee = async (req, res) => {
   try {
     const { fullName, email } = req.body;
@@ -130,7 +166,6 @@ export const protect = async (req, res, next) => {
 
 export const authorizeOrganizations = (...orgs) => {
   return (req, res, next) => {
-    console.log("autherizing asp")
     if (!req.employee || !req.employee.organizationType) {
       return res.status(403).json({ success: false, message: 'Access denied. No organization info found.' });
     }
@@ -138,7 +173,6 @@ export const authorizeOrganizations = (...orgs) => {
     if (!orgs.includes(req.employee.organizationType)) {
       return res.status(403).json({ success: false, message: 'Access denied. Unauthorized organization.' });
     }
-    console.log("gggg")
     next();
   }
 }
@@ -146,8 +180,10 @@ export const authorizeOrganizations = (...orgs) => {
 export const authorizeHospitalEmployee = authorizeOrganizations("Hospital")
 export const authorizeAspEmployee = authorizeOrganizations("ASP")
 export const authorizeDspEmployee = authorizeOrganizations("DSP")
+export const authorizeResearcher = authorizeOrganizations("RSH")
 
 authRoute.post("/register", protect, registerEmployee);
+authRoute.post("/register-researcher", protect, authorizeDspEmployee, registerEmployee);
 authRoute.post("/login", loginEmployee);
 
 export default authRoute;
