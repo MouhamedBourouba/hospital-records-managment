@@ -127,6 +127,7 @@ export const protect = async (req, res, next) => {
 
 export const authorizeOrganizations = (...orgs) => {
   return (req, res, next) => {
+    console.log("auth")
     if (!req.employee || !req.employee.organizationType) {
       return res.status(403).json({ message: 'Access denied. No organization info found.' });
     }
@@ -138,17 +139,9 @@ export const authorizeOrganizations = (...orgs) => {
   }
 }
 
-export const authorizeHospitalEmployee = () => {
-  return authorizeOrganizations("Hospital")
-}
-
-export const authorizeAspEmployee = () => {
-  return authorizeOrganizations("ASP")
-}
-
-export const authorizeDspEmployee = () => {
-  return authorizeOrganizations("DSP")
-}
+export const authorizeHospitalEmployee = authorizeOrganizations("Hospital")
+export const authorizeAspEmployee = authorizeOrganizations("ASP")
+export const authorizeDspEmployee = authorizeOrganizations("DSP")
 
 authRoute.post("/register", protect, registerEmployee);
 authRoute.post("/login", loginEmployee);
