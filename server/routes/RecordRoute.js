@@ -6,7 +6,6 @@ import { authorizeAspEmployee, authorizeDspEmployee, authorizeHospitalEmployee, 
 
 const router = express.Router();
 
-
 export const createDeathRecord = async (req, res) => {
   try {
     const {
@@ -107,5 +106,106 @@ router.post('deathRecord', protect, authorizeHospitalEmployee, createDeathRecord
 router.get('hospital/deathRecord', protect, authorizeHospitalEmployee, getAllHospitalDeaths);
 router.get('asp/deathRecord', protect, authorizeAspEmployee, getAllAspDeaths);
 router.get('dsp/deathRecord', protect, authorizeDspEmployee, getAllDspDeaths);
+
+export const createBirthRecord = async (req, res) => {
+  try {
+    const {
+      ArabicFullName,
+      LatinFullName,
+      BirthDate,
+      City,
+      Gender,
+      FatherName,
+      MotherName,
+    } = req.body;
+
+    const newRecord = {
+      ArabicFullName,
+      LatinFullName,
+      BirthDate,
+      City,
+      Gender,
+      FatherName,
+      MotherName,
+      SignedBy: req.employee._id,
+      Hospital: req.employee.organization
+    };
+
+    const birthRecord = await BirthRecord.create(newRecord);
+
+    emitBirth(birthRecord);
+
+    res.status(201).json({
+      success: true,
+      data: birthRecord
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+export const getAllHospitalBirths = async (req, res) => {
+  try {
+    const birthRecords = await BirthRecord.find({ Hospital: req.employee.organization });
+
+    res.status(200).json({
+      success: true,
+      count: birthRecords.length,
+      data: birthRecords
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+export const getAllAspBirths = async (req, res) => {
+  try {
+    const birthRecords = await BirthRecord.find({});
+    const filtered = [];
+
+    for (const death of birthRecords) {
+      const hospital = await Hospital.findById(death.Hospital);
+      if (hospital.aspAffiliation == req.employee.organization) {
+        filtered.push(death)
+      }
+    }
+
+    res.status(200).json({
+      success: true,
+      data: filtered
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+export const getAllDspBirths = async (req, res) => {
+  try {
+    const deathRecords = await BirthRecord.find({ Status: "verified" });
+    res.status(200).json({
+      success: true,
+      data: deathRecords
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+router.post('birthRecord', protect, authorizeHospitalEmployee, createBirthRecord);
+router.get('hospital/birthRecord', protect, authorizeHospitalEmployee, getAllHospitalBirths);
+router.get('asp/birthRecord', protect, authorizeAspEmployee, getAllAspBirths);
+router.get('dsp/birthRecord', protect, authorizeDspEmployee, getAllDspBirths);
 
 export default router;
