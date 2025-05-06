@@ -8,9 +8,9 @@ import {
 
 const AnonymRoute = Router();
 
-AnonymRoute.get("/api/anonym", getAnonyms);
-AnonymRoute.get("/api/anonym/:id", getAnonymById);
-AnonymRoute.delete("/api/anonym/:id", deleteAnonym);
-AnonymRoute.put("/api/anonym/:id", updateAnonym);
+AnonymRoute.get("/anonym", getAnonyms);
+AnonymRoute.get("/anonym/:id", getAnonymById);
+AnonymRoute.delete("/anonym/:id", deleteAnonym);
+AnonymRoute.put("/anonym/:id", updateAnonym);
 
 export default AnonymRoute;

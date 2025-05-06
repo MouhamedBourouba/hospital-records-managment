@@ -1,5 +1,9 @@
 import mongoose from "mongoose"
 
+const baseRecord = {
+
+}
+
 const RecordSchema = new mongoose.Schema({
     ArabicFullName: {
         type: String,

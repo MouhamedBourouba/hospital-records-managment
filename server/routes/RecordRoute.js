@@ -3,9 +3,17 @@ import { addRecord, deleteRecord, getRecords, updateRecord } from '../controller
 
 const router = express.Router();
 
-router.post('/api/addRecord', addRecord);
-router.get('/api/getRecords', getRecords);
-router.put('/api/updateRecord', updateRecord);
-router.delete('/api/deleteRecord', deleteRecord);
+// router.post('death', addDeath)
+// const addDeath = async (req, res) => {
+// }
+//
+// router.get('death', getDeaths)
+// const getDeaths = async (req, res) => {
+// }
+
+router.post('record', addRecord);
+router.get('record', getRecords);
+router.put('record', updateRecord);
+router.delete('record', deleteRecord);
 
 export default router;

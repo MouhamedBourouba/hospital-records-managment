@@ -1,11 +1,10 @@
 import { connectDB } from "../config/db.js";
 import Record from "../models/Record.js";
-import { emitBirth, emitDeath } from "../routes/eventStream.js";
+import { emitBirth, emitDeath } from "../routes/EventStream.js";
 import { createAnonym } from "./AnonymController.js";
 
 export const getRecords = async (_, res) => {
   try {
-    await connectDB();
     const records = await Record.find();
     res.status(200).json(records);
   } catch (error) {
@@ -16,8 +15,6 @@ export const getRecords = async (_, res) => {
 
 export const addRecord = async (req, res) => {
   try {
-    await connectDB();
-
     const newRecord = new Record(req.body);
     await newRecord.save();
 
@@ -39,7 +36,6 @@ export const addRecord = async (req, res) => {
 export const updateRecord = async (req, res) => {
   const { id } = req.params;
   try {
-    await connectDB();
     const updatedRecord = await Record.findByIdAndUpdate(id, req.body, {
       new: true,
     });
@@ -56,7 +52,6 @@ export const updateRecord = async (req, res) => {
 export const deleteRecord = async (req, res) => {
   const { id } = req.params;
   try {
-    await connectDB();
     const deletedRecord = await Record.findByIdAndDelete(id);
     if (!deletedRecord) {
       return res.status(404).json({ message: "Record not found" });

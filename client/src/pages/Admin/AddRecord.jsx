@@ -67,7 +67,7 @@ function AddRecord() {
     try {
       await axoisInstance.post(API_PATHS.RECORD.CREATE_RECORD, {
         ...recordData,
-        BirthDate:new Date(recordData.BirthDate).toISOString(),
+        BirthDate: new Date(recordData.BirthDate).toISOString(),
         DateOfDeath: recordData.DateOfDeath ? new Date(recordData?.DateOfDeath)?.toISOString() : null,
         PlaceOfDeath: recordData.PlaceOfDeath ? recordData.PlaceOfDeath : null,
         CauseOfDeath: recordData.CauseOfDeath ? recordData.CauseOfDeath : null,
@@ -119,7 +119,7 @@ function AddRecord() {
         setRecordData(() => ({
           ArabicFullName: recordInfo.ArabicFullName,
           LatinFullName: recordInfo.LatinFullName,
-          BirthDate: recordInfo.BirthDate ? moment(recordInfo.BirthDate).format('YYY-MM-DD') : null ,
+          BirthDate: recordInfo.BirthDate ? moment(recordInfo.BirthDate).format('YYY-MM-DD') : null,
           City: recordInfo.City,
           Wilaya: recordInfo.Wilaya,
           Gender: recordInfo.Gender,
@@ -210,7 +210,7 @@ function AddRecord() {
       getRecordDetailsByID(recordId);
     }
 
-    return () => {};
+    return () => { };
   }, [recordId]);
 
   return (
@@ -338,7 +338,7 @@ function AddRecord() {
                   placeholder="Father full name"
                   className="form-input"
                   value={recordData.parents.fatherName}
-                  onChange={(e) => handleValueChange("parents", {motherName: recordData.parents.motherName, fatherName: e.target.value})}
+                  onChange={(e) => handleValueChange("parents", { motherName: recordData.parents.motherName, fatherName: e.target.value })}
                 />
               </div>
 
@@ -351,7 +351,7 @@ function AddRecord() {
                   placeholder="Mother full name"
                   className="form-input"
                   value={recordData.parents.motherName}
-                  onChange={(e) => handleValueChange("parents", {fatherName: recordData.parents.fatherName, motherName: e.target.value})}
+                  onChange={(e) => handleValueChange("parents", { fatherName: recordData.parents.fatherName, motherName: e.target.value })}
                   type="text"
                 />
               </div>

@@ -3,7 +3,6 @@ import { connectDB } from '../config/db.js';
 
 export const createAnonym = async (data) => {
     try {
-        await connectDB();
         const { BirthDate, City, Wilaya, Gender, SignedBy, DateOfDeath, PlaceOfDeath, CauseOfDeath } = data;
         const newAnonym = new Anonym({
             BirthDate,
@@ -24,7 +23,6 @@ export const createAnonym = async (data) => {
 
 export const getAnonyms = async (_, res) => {
     try {
-        await connectDB();
         const anonymRecords = await Anonym.find();
         res.status(200).json(anonymRecords);
     } catch (err) {
@@ -34,7 +32,6 @@ export const getAnonyms = async (_, res) => {
 
 export const getAnonymById = async (req, res) => {
     try {
-        await connectDB();
         const anonym = await Anonym.findById(req.params.id);
         if (!anonym) {
             return res.status(404).json({ message: 'Anonym record not found' });
@@ -47,7 +44,6 @@ export const getAnonymById = async (req, res) => {
 
 export const updateAnonym = async (req, res) => {
     try {
-        await connectDB();
         const { BirthDate, City, Wilaya, Gender, SignedBy, DateOfDeath, PlaceOfDeath, CauseOfDeath } = req.body;
         const anonym = await Anonym.findById(req.params.id);
         if (!anonym) {
@@ -70,7 +66,6 @@ export const updateAnonym = async (req, res) => {
 
 export const deleteAnonym = async (req, res) => {
     try {
-        await connectDB();
         const anonym = await Anonym.findByIdAndDelete(req.params.id);
         if (!anonym) {
             return res.status(404).json({ message: 'Anonym record not found' });

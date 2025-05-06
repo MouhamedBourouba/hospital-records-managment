@@ -33,5 +33,6 @@ const AnonymSchema = new mongoose.Schema({
         type: String,
     },
 })
+
 const Anonym = mongoose.model('Anonym', AnonymSchema)
 export default Anonym;
