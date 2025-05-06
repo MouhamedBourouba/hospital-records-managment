@@ -2,13 +2,13 @@ import express from 'express';
 import { emitBirth, emitDeath } from "../routes/EventStream.js";
 import { DeathRecord, BirthRecord } from '../models/Records.js';
 import { Hospital } from '../models/Organizations.js';
+import { authorizeAspEmployee, authorizeDspEmployee, authorizeHospitalEmployee, protect } from './AuthRoute.js';
 
 const router = express.Router();
 
 
 export const createDeathRecord = async (req, res) => {
   try {
-
     const {
       ArabicFullName,
       LatinFullName,
@@ -69,9 +69,9 @@ export const getAllAspDeaths = async (req, res) => {
     const deathRecords = await DeathRecord.find({});
     const filtered = [];
 
-    for(const death of deathRecords) {
-      const hospital =  await Hospital.findById(death.Hospital);
-      if(hospital.aspAffiliation == req.employee.organization) {
+    for (const death of deathRecords) {
+      const hospital = await Hospital.findById(death.Hospital);
+      if (hospital.aspAffiliation == req.employee.organization) {
         filtered.push(death)
       }
     }
@@ -90,7 +90,7 @@ export const getAllAspDeaths = async (req, res) => {
 
 export const getAllDspDeaths = async (req, res) => {
   try {
-    const deathRecords = await DeathRecord.find({Status: "verified"});
+    const deathRecords = await DeathRecord.find({ Status: "verified" });
     res.status(200).json({
       success: true,
       data: deathRecords
@@ -103,14 +103,9 @@ export const getAllDspDeaths = async (req, res) => {
   }
 };
 
-router.post('deathRecord', addRecord);
-router.get('deathRecord', getRecords);
-router.put('deathRecord', updateRecord);
-router.delete('deathRecord', deleteRecord);
-
-router.post('birthRecord', addRecord);
-router.get('birthRecord', getRecords);
-router.put('birthRecord', updateRecord);
-router.delete('birthRecord', deleteRecord);
+router.post('deathRecord', protect, authorizeHospitalEmployee, createDeathRecord);
+router.get('hospital/deathRecord', protect, authorizeHospitalEmployee, getAllHospitalDeaths);
+router.get('asp/deathRecord', protect, authorizeAspEmployee, getAllAspDeaths);
+router.get('dsp/deathRecord', protect, authorizeDspEmployee, getAllDspDeaths);
 
 export default router;
