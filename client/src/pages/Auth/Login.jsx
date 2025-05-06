@@ -7,8 +7,8 @@ import { API_PATHS } from "../../utils/apiPaths";
 import { UserContext } from "../../context/UserContext";
 
 function Login() {
-  const [PhoneNumber, setPhoneNumber] = useState("");
-  const [Password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
   const { updateUser } = useContext(UserContext);
@@ -17,12 +17,12 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    if (!(PhoneNumber)) {
-      setError("Please enter a valid phone number.");
+    if (!(email)) {
+      setError("Please enter a valid email addresss.");
       return;
     }
 
-    if (!Password) {
+    if (!password) {
       setError("Please enter the password");
       return;
     }
@@ -32,11 +32,11 @@ function Login() {
     // Login API Call
     try {
       const response = await axoisInstance.post(API_PATHS.AUTH.LOGIN, {
-        PhoneNumber,
-        Password,
+        email: email,
+        password: password,
       });
 
-      const { token, Role } = response.data;
+      const { token } = response.data;
 
       if (token) {
         localStorage.setItem("token", token);
@@ -63,14 +63,15 @@ function Login() {
 
         <form onSubmit={handleLogin}>
           <Input
-            value={PhoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            label={"Phone Number"}
-            placeholder={"+213"}
-            type={"text"}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            label={"Email address"}
+            placeholder={"name@gmail.com"}
+            type={"email"}
           />
+
           <Input
-            value={Password}
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
             label={"Password"}
             placeholder={"Min 8 Characters"}

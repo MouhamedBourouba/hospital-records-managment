@@ -1,8 +1,21 @@
 import { Router } from "express";
-import crypto from "crypto"
-import { DeathRecord } from "../models/Record";
-import { AnonymBirth, AnonymDeath } from "../models/Anonym";
-import { authorizeResearcher, protect } from "./AuthRoute";
+import crypto, { subtle } from "crypto"
+import { AnonymBirth, AnonymDeath } from "../models/Anonym.js";
+import { authorizeResearcher, protect } from "./AuthRoute.js";
+import { encode } from "punycode";
+
+/**
+ * Hashes a string using SHA-256 and returns a hex string.
+ * @param {string} str
+ * @returns {Promise<string>}
+ */
+async function hashString(str) {
+  const encoded = new TextEncoder().encode(str);
+  const buffer = await subtle.digest('SHA-256', encoded);
+  return Array.from(new Uint8Array(buffer))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+}
 
 export async function createDeathAnonym(record) {
   try {
@@ -16,23 +29,23 @@ export async function createDeathAnonym(record) {
       MotherName,
       DateOfDeath,
       PlaceOfDeath,
-      CauseOfDeath
+      CauseOfDeath,
+      Hospital,
     } = record;
 
-    const newAnonym = new AnonymDeath({
-      HashedArabicFullName: crypto.hash("sha256", ArabicFullName),
-      HashedLatinFullName: crypto.hash("sha256", LatinFullName),
+    await AnonymDeath.create({
+      HashedArabicFullName: await hashString(ArabicFullName),
+      HashedLatinFullName: await hashString(LatinFullName),
       BirthDate: BirthDate,
       City: City,
       Gender: Gender,
-      FatherName: FatherName,
-      MotherName: MotherName,
+      FatherName: await hashString(FatherName),
+      MotherName: await hashString(MotherName),
       DateOfDeath: DateOfDeath,
       PlaceOfDeath: PlaceOfDeath,
-      CauseOfDeath: CauseOfDeath
+      CauseOfDeath: CauseOfDeath,
+      Hospital: Hospital
     });
-
-    await newAnonym.save();
   } catch (error) {
     console.error('Error creating anonym:', error.message);
     throw new Error('Error creating anonym record');
@@ -49,19 +62,19 @@ export async function createBirthAnonym(record) {
       Gender,
       FatherName,
       MotherName,
+      Hospital
     } = record;
 
-    const newAnonym = new AnonymDeath({
-      HashedArabicFullName: crypto.hash("sha256", ArabicFullName),
-      HashedLatinFullName: crypto.hash("sha256", LatinFullName),
+    await AnonymBirth.create({
+      HashedArabicFullName: await hashString(ArabicFullName),
+      HashedLatinFullName: await hashString(LatinFullName),
       BirthDate: BirthDate,
       City: City,
       Gender: Gender,
-      FatherName: FatherName,
-      MotherName: MotherName,
+      HashedFatherName: await hashString(FatherName),
+      HashedMotherName: await hashString(MotherName),
+      Hospital: Hospital
     });
-
-    await newAnonym.save();
   } catch (error) {
     console.error('Error creating anonym:', error.message);
     throw new Error('Error creating anonym record');

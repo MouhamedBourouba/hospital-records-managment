@@ -91,6 +91,11 @@ export const registerEmployee = async (req, res) => {
   }
 };
 
+
+async function getEmployee(req, res) {
+  return res.status(200).json(req.employee)
+}
+
 export const loginEmployee = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -136,7 +141,6 @@ export const protect = async (req, res, next) => {
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
       const employee = await Employee.findById(decoded.id);
 
       // If user not found
@@ -185,5 +189,6 @@ export const authorizeResearcher = authorizeOrganizations("RSH")
 authRoute.post("/register", protect, registerEmployee);
 authRoute.post("/register-researcher", protect, authorizeDspEmployee, registerEmployee);
 authRoute.post("/login", loginEmployee);
+authRoute.get("/employee", protect, getEmployee);
 
 export default authRoute;

@@ -30,11 +30,6 @@ const baseAnonym = {
   },
   HashedFatherName: String,
   HashedMotherName: String,
-  SignedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'employee',
-    required: true,
-  },
   Hospital: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "hospital",

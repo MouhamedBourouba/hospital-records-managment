@@ -3,11 +3,12 @@ export const BASE_URL = "http://localhost:5000";
 // utils/apiPaths.js
 export const API_PATHS = {
   AUTH: {
-    LOGIN: "/login", // Authenticate user & return JWT token
+    LOGIN: "/api/login",
+    GET_USER: "/api/employee"
   },
 
   RECORD: {
-    CREATE_RECORD : "/api/addRecord", // Create a new Record
+    CREATE_RECORD: "/api/addRecord",
     GET_ALL_RECORD: "/api/getRecords",
   },
 
