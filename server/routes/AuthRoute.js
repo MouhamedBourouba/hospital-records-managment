@@ -1,6 +1,7 @@
 import { Router } from "express";
 import jwt from 'jsonwebtoken';
 import Employee from "../models/Employee.js";
+import { sendPasswordEmail } from "../services/email.js";
 
 const authRoute = Router();
 
@@ -38,6 +39,8 @@ export const registerEmployee = async (req, res) => {
       organizationType: employee.organizationType
     }
     const newEmployee = await Employee.create(employeeData);
+
+    sendPasswordEmail(email, hashedPassword);
 
     res.status(201).json({
       success: true,
@@ -129,11 +132,11 @@ export const authorizeOrganizations = (...orgs) => {
   return (req, res, next) => {
     console.log("autherizing asp")
     if (!req.employee || !req.employee.organizationType) {
-      return res.status(403).json({ message: 'Access denied. No organization info found.' });
+      return res.status(403).json({ success: false, message: 'Access denied. No organization info found.' });
     }
 
     if (!orgs.includes(req.employee.organizationType)) {
-      return res.status(403).json({ message: 'Access denied. Unauthorized organization.' });
+      return res.status(403).json({ success: false, message: 'Access denied. Unauthorized organization.' });
     }
     next();
   }

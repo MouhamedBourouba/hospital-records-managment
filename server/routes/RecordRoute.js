@@ -221,7 +221,7 @@ const approveRecord = (type) => {
   }
 }
 
-router.post("/asp/approve-birth-record", protect, authorizeAspEmployee, approveRecord("birth"))
-router.post("/asp/approve-death-record", protect, authorizeAspEmployee, approveRecord("death"))
+router.post("/asp/approve-birth-record/:recordId", protect, authorizeAspEmployee, approveRecord("birth"))
+router.post("/asp/approve-death-record/:recordId", protect, authorizeAspEmployee, approveRecord("death"))
 
 export default router;
