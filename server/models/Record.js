@@ -26,7 +26,7 @@ const baseRecordFields = {
   MotherName: String,
   SignedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Employee',
+    ref: 'employee',
     required: true,
   },
   Status: {
@@ -36,7 +36,7 @@ const baseRecordFields = {
   },
   StatusUpdatedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Employee',
+    ref: 'employee',
     default: null,
   },
   Hospital: {
