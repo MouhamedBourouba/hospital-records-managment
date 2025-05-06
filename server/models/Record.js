@@ -46,7 +46,6 @@ const baseRecordFields = {
   }
 };
 
-// Death Record Schema
 const DeathRecordSchema = new mongoose.Schema({
   ...baseRecordFields,
   DateOfDeath: {
@@ -64,10 +63,6 @@ const DeathRecordSchema = new mongoose.Schema({
 
 const BirthRecordSchema = new mongoose.Schema({
   ...baseRecordFields,
-  PlaceOfBirth: {
-    type: String,
-    required: true,
-  },
 });
 
 
