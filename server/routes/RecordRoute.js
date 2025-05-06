@@ -338,4 +338,6 @@ export const getStatistique = async (req, res) => {
   }
 };
 
+router.get("/statistique/birth-death", protect, getStatistique);
+
 export default router;
