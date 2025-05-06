@@ -1,95 +1,93 @@
 import {
-  LuLayoutDashboard,
-  LuLogOut,
-  LuSquarePlus,
-  LuUsers,
   LuBaby,
-  LuUserPlus
+  LuBuilding,
+  LuHospital,
+  LuLogOut,
+  LuUsers,
+  LuX,
 } from "react-icons/lu";
-import { IoPersonAdd } from "react-icons/io5";
-import { GiCoffin } from "react-icons/gi";
 
-export const SIDE_MENU_DATA = [
-  {
-    id: "01",
-    label: "Dashboard",
-    icon: LuLayoutDashboard,
-    path: "/admin/dashboard",
-  },
+export const SIDE_MENU_HOSPITAL = [
   {
     id: "02",
-    label: "Add Record",
-    icon: LuSquarePlus,
-    path: "/admin/add-record",
+    label: "Death records",
+    icon: LuX,
+    path: "/hospital/death-records",
   },
   {
     id: "03",
-    label: "All Employees",
-    icon: LuUsers,
-    path: "/admin/users",
-  },
-  {
-    id: "05",
-    label: "Logout",
-    icon: LuLogOut,
-    path: "logout",
-  },
-];
-
-export const SIDE_MENU_USER_DATA = [
-  {
-    id: "01",
-    label: "Dashboard",
-    icon: LuLayoutDashboard,
-    path: "/user/dashboard",
-  },
-  {
-    id: "02",
-    label: "Logout",
-    icon: LuLogOut,
-    path: "logout",
-  },
-];
-
-export const SIDE_MENU_HOSPITAL_DATA = [
-  {
-    id: "01",
-    label: "Dashboard",
-    icon: LuLayoutDashboard,
-    path: "/hospital/dashboard",
-  },
-  // {
-  //   id: "02",
-  //   label: "Add Birth",
-  //   icon: LuSquarePlus,
-  //   path: "/hospital/add-birth",
-  // },
-  // {
-  //   id: "03",
-  //   label: "Add Death",
-  //   icon: LuSquarePlus,
-  //   path: "/hospital/add-death",
-  // },
-  {
-    id: "02",
-    label: "Birth Records",
+    label: "Birth records",
     icon: LuBaby,
     path: "/hospital/birth-records",
   },
   {
     id: "03",
-    label: "Death Records",
-    icon: GiCoffin,
-    path: "/hospital/death-records",
-  },
-  {
-    id: "04",
-    label: "Add Employee",
-    icon: LuUserPlus,
-    path: "/hospital/add-employee",
+    label: "Doctors",
+    icon: LuUsers,
+    path: "/hospital/users",
   },
   {
     id: "05",
+    label: "Logout",
+    icon: LuLogOut,
+    path: "logout",
+  },
+];
+
+export const SIDE_MENU_ASP = [
+  {
+    id: "01",
+    label: "Verify Birth Records",
+    icon: LuBaby,
+    path: "/asp/birth-records",
+  },
+  {
+    id: "02",
+    label: "Verify Death Records",
+    icon: LuX,
+    path: "/asp/death-records",
+  },
+  {
+    id: "03",
+    label: "Add employees",
+    icon: LuUsers,
+    path: "/asp/employees",
+  },
+  {
+    id: "04",
+    label: "Add Hospitals",
+    icon: LuHospital,
+    path: "/asp/hospitals",
+  },
+  {
+    id: "05",
+    label: "Logout",
+    icon: LuLogOut,
+    path: "logout",
+  },
+];
+
+export const SIDE_MENU_DSP = [
+  {
+    id: "01",
+    label: "Death Records",
+    icon: LuX,
+    path: "/user/dashboard",
+  },
+  {
+    id: "02",
+    label: "Birth Records",
+    icon: LuBaby,
+    path: "/user/dashboard",
+  },
+  {
+    id: "03",
+    label: "Add ASP",
+    icon: LuBuilding,
+    path: "/user/dashboard",
+  },
+  {
+    id: "04",
     label: "Logout",
     icon: LuLogOut,
     path: "logout",
@@ -103,7 +101,7 @@ export const PRIORITY_DATA = [
 ];
 
 export const STATUS_DATA = [
-    { label: "Pending", value: "Pending" },
-    { label: "In Progress", value: "In Progress" },
-    { label: "Completed", value: "Completed" },
+  { label: "Pending", value: "Pending" },
+  { label: "In Progress", value: "In Progress" },
+  { label: "Completed", value: "Completed" },
 ]

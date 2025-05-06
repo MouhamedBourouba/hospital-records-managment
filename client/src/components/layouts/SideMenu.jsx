@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { SIDE_MENU_DATA, SIDE_MENU_HOSPITAL_DATA, SIDE_MENU_USER_DATA } from "../../utils/data";
+import { SIDE_MENU_ASP, SIDE_MENU_DSP, SIDE_MENU_HOSPITAL } from "../../utils/data";
 
 const SideMenu = ({ activeMenu }) => {
   const { user, clearUser } = useContext(UserContext);
@@ -27,7 +27,7 @@ const SideMenu = ({ activeMenu }) => {
   useEffect(() => {
     if (user) {
       setSideMenuData(
-        user?.organizationType === "Hospital" && SIDE_MENU_HOSPITAL_DATA
+        user?.organizationType === "Hospital" ? SIDE_MENU_HOSPITAL : user?.organizationType === "ASP" ? SIDE_MENU_ASP : SIDE_MENU_DSP
       );
     }
 
