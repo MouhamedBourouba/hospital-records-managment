@@ -138,6 +138,7 @@ export const authorizeOrganizations = (...orgs) => {
     if (!orgs.includes(req.employee.organizationType)) {
       return res.status(403).json({ success: false, message: 'Access denied. Unauthorized organization.' });
     }
+    console.log("gggg")
     next();
   }
 }

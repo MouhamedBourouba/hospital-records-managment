@@ -212,16 +212,33 @@ router.get('/dsp/birth-record', protect, authorizeDspEmployee, getAllDspBirths);
 const approveRecord = (type) => {
   return async (req, res) => {
     if (type == "death") {
-      const { id } = req.body;
-      DeathRecord.findByIdAndUpdate(id, { Status: "verified" })
+      const id = req.params.recordId; 
+      await DeathRecord.findByIdAndUpdate(id, { Status: "verified" })
+      return res.status(200).json({ success: true });
     } else {
-      const { id } = req.body;
-      BirthRecord.findByIdAndUpdate(id, { Status: "verified" })
+      const id = req.params.recordId; 
+      await BirthRecord.findByIdAndUpdate(id, { Status: "verified" })
+      return res.status(200).json({ success: true });
     }
   }
 }
 
 router.post("/asp/approve-birth-record/:recordId", protect, authorizeAspEmployee, approveRecord("birth"))
 router.post("/asp/approve-death-record/:recordId", protect, authorizeAspEmployee, approveRecord("death"))
+
+const rejectRecord = (type) => {
+  return async (req, res) => {
+    if (type == "death") {
+      const id = req.params.recordId;
+      DeathRecord.findByIdAndUpdate(id, { Status: "rejected" })
+    } else {
+      const id = req.params.recordId; 
+      BirthRecord.findByIdAndUpdate(id, { Status: "rejected" })
+    }
+  }
+}
+
+router.post("/asp/reject-birth-record/:recordId", protect, authorizeAspEmployee, rejectRecord("birth"))
+router.post("/asp/reject-death-record/:recordId", protect, authorizeAspEmployee, rejectRecord("death"))
 
 export default router;
