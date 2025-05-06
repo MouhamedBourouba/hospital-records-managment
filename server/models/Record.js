@@ -57,6 +57,12 @@ const DeathRecordSchema = new mongoose.Schema({
   DateOfDeath: {
     type: Date,
     required: true,
+    validate: {
+      validator: function(value) {
+        return value <= new Date();
+      },
+      message: 'Death date cannot be in the future'
+    }
   },
   PlaceOfDeath: {
     type: String,

@@ -127,7 +127,7 @@ export const protect = async (req, res, next) => {
 
 export const authorizeOrganizations = (...orgs) => {
   return (req, res, next) => {
-    console.log("auth")
+    console.log("autherizing asp")
     if (!req.employee || !req.employee.organizationType) {
       return res.status(403).json({ message: 'Access denied. No organization info found.' });
     }

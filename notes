@@ -1,16 +1,18 @@
 DSP => ASP => Hospitals
 
-
 DSP => [ ASP = {Hospitals} ]
-
 
 hospitals => createDeath/Birth => verification by ASP
 
+Setif doctor token
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTljNjhkZDJiYzY5ZDc5ZTQyOWJmMCIsImlhdCI6MTc0NjUyOTgxOH0.hPxXoKN2cA7Q2bzGTNow0YkSMbR3rntTAAbfQhd_g0I
 
+Oran doctor token
+1 --
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTlmNTIyNmU4Mzc1OWRmOWU3NGU3MCIsImlhdCI6MTc0NjUzMjYyN30.MGEPEkRECKW9bCcYbaTjYalqAV4D5a711kRkfVjLiFg
 
+2 --
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTlmOTc2NmU4Mzc1OWRmOWU3NGU5MiIsImlhdCI6MTc0NjUzMjc3MX0.sCW_Ezvq4B9lg1SuA25lZGaa5yZizvjn2zSxgXLBzBg
 
-
-
-
-
-
+Oran ASP
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTllYzc3NmU4Mzc1OWRmOWU3NGUyYSIsImlhdCI6MTc0NjUzMTgyMn0.U4dAoNGEgsdTnly1hX9F73rlaHg-5CZyoaQ-2Fpk244
