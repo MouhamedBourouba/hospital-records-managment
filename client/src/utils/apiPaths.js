@@ -4,12 +4,15 @@ export const BASE_URL = "http://localhost:5000";
 export const API_PATHS = {
   AUTH: {
     LOGIN: "/api/login",
-    GET_USER: "/api/employee"
+    GET_USER: "/api/employee",
+    CREATE_EMPLOYEE: "/api/register-employee"
   },
+
+
 
   RECORD: {
     CREATE_RECORD: "/api/addRecord",
-    GET_ALL_RECORD: "/api/getRecords",
+    GET_ALL_RECORD: "/api/hospital/birth-record",
   },
 
   USERS: {

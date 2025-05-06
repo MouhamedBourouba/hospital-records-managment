@@ -24,6 +24,15 @@ import BirthRecordsAsp from "./pages/Asp/BirthRecords"
 import AddHospital from "./pages/Asp/AddHospital"
 import AspEmployees from "./pages/Asp/Employees";
 
+import DeathRecords from "./pages/Hospital/DeathRecords"
+import BirthRecords from "./pages/Hospital/BirthRecords"
+import HospitalDoctors from "./pages/Hospital/Users"
+
+import DeathRecordsAsp from "./pages/Asp/DeathRecords"
+import BirthRecordsAsp from "./pages/Asp/BirthRecords"
+import AddHospital from "./pages/Asp/AddHospital"
+import AspEmployees from "./pages/Asp/Employees";
+
 export default function App() {
   return (
     <UserProvider>
@@ -39,11 +48,23 @@ export default function App() {
               <Route path="/hospital/users" element={<HospitalDoctors />} />
             </Route>
 
-            <Route element={<PrivateRoute allowedRoles={["ASP"]} />}>
-              <Route path="/asp/death-records" element={<DeathRecordsAsp />} />
-              <Route path="/asp/birth-records" element={<BirthRecordsAsp />} />
-              <Route path="/asp/employees" element={<AspEmployees />} />
-              <Route path="/asp/hospitals" element={<AddHospital />} />
+            {/*  Hospital Route */}
+            <Route element={<PrivateRoute allowedRoles={["Hospital"]} />}>
+              <Route
+                path="/hospital/dashboard"
+                element={<DashboardHospital />}
+              />
+              <Route path="/hospital/add-birth" element={<AddBirth />} />
+              <Route path="/hospital/add-death" element={<AddDeath />} />
+              <Route
+                path="/hospital/birth-records"
+                element={<BirthRecords />}
+              />
+              <Route
+                path="/hospital/death-records"
+                element={<DeathRecords />}
+              />
+              <Route path="/hospital/add-employee" element={<AddEmployee />} />
             </Route>
 
             {/* Default Route */}

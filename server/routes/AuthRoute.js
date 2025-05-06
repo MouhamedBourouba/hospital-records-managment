@@ -186,7 +186,7 @@ export const authorizeAspEmployee = authorizeOrganizations("ASP")
 export const authorizeDspEmployee = authorizeOrganizations("DSP")
 export const authorizeResearcher = authorizeOrganizations("RSH")
 
-authRoute.post("/register", protect, registerEmployee);
+authRoute.post("/register-employee", protect, registerEmployee);
 authRoute.post("/register-researcher", protect, authorizeDspEmployee, registerEmployee);
 authRoute.post("/login", loginEmployee);
 authRoute.get("/employee", protect, getEmployee);
