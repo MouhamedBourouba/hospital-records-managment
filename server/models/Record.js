@@ -29,16 +29,21 @@ const baseRecordFields = {
     ref: 'Employee',
     required: true,
   },
-  status: {
+  Status: {
     type: String,
     enum: ["pending", "verified", "rejected"],
     default: "pending",
   },
-  statusUpdatedBy: {
+  StatusUpdatedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Employee',
     default: null,
   },
+  Hospital: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "hospital",
+    default: null
+  }
 };
 
 // Death Record Schema
