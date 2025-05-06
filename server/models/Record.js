@@ -1,53 +1,72 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
-const baseRecord = {
+const baseRecordFields = {
+  ArabicFullName: {
+    type: String,
+    required: true,
+  },
+  LatinFullName: {
+    type: String,
+    required: true,
+  },
+  BirthDate: {
+    type: Date,
+    required: true,
+  },
+  City: {
+    type: String,
+    required: true,
+  },
+  Gender: {
+    type: String,
+    enum: ["Male", "Female"],
+    required: true,
+  },
+  FatherName: String,
+  MotherName: String,
+  SignedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Employee',
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ["pending", "verified", "rejected"],
+    default: "pending",
+  },
+  statusUpdatedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Employee',
+    default: null,
+  },
+};
 
-}
+// Death Record Schema
+const DeathRecordSchema = new mongoose.Schema({
+  ...baseRecordFields,
+  DateOfDeath: {
+    type: Date,
+    required: true,
+  },
+  PlaceOfDeath: {
+    type: String,
+    required: true,
+  },
+  CauseOfDeath: {
+    type: String,
+  },
+});
 
-const RecordSchema = new mongoose.Schema({
-    ArabicFullName: {
-        type: String,
-        required: true,
-    },
-    LatinFullName: {
-        type: String,
-        required: true,
-    },
-    BirthDate: {
-        type: Date,
-        default: Date.now,
-    },
-    City: {
-        type: String,
-        required: true,
-    },
-    Wilaya: {
-        type: String,
-        required: true,
-    },
-    Gender: {
-        type: String,
-        enum: ["Male", "Female"],
-        required: true,
-    },
-    parents: {
-        fatherName: String,
-        motherName: String
-    },
-    SignedBy: {
-        type: String,
-        required: true,
-    },
-    DateOfDeath: {
-        type: Date,
-        default: null,
-    },
-    PlaceOfDeath: {
-        type: String,
-    },
-    CauseOfDeath: {
-        type: String,
-    },
-})
-const Record = mongoose.model('Record', RecordSchema)
-export default Record;
+const BirthRecordSchema = new mongoose.Schema({
+  ...baseRecordFields,
+  PlaceOfBirth: {
+    type: String,
+    required: true,
+  },
+});
+
+
+const DeathRecord = mongoose.model('DeathRecord', DeathRecordSchema);
+const BirthRecord = mongoose.model('BirthRecord', BirthRecordSchema);
+
+export { DeathRecord, BirthRecord };
