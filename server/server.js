@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import cors from "cors";
 import AuthRoute from "./routes/AuthRoute.js";
 import RecordRoute from "./routes/RecordRoute.js";
-import UserRoute from "./routes/UserRoute.js";
 import Events from "./routes/EventStream.js";
 import bodyParser from "body-parser";
 import { connectDB } from "./config/db.js";
@@ -26,7 +25,6 @@ app.use("/api/events/", Events);
 app.use("/api/", RecordRoute);
 app.use("/api/", AnonymRoute);
 app.use("/api/", Organizations);
-app.use(UserRoute);
 
 app.listen(PORT, async () => {
   try {

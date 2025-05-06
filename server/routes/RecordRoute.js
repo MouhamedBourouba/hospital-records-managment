@@ -213,11 +213,11 @@ const approveRecord = (type) => {
   return async (req, res) => {
     if (type == "death") {
       const id = req.params.recordId; 
-      await DeathRecord.findByIdAndUpdate(id, { Status: "verified" })
+      await DeathRecord.findByIdAndUpdate(id, { Status: "verified", SignedBy: req.employee._id})
       return res.status(200).json({ success: true });
     } else {
       const id = req.params.recordId; 
-      await BirthRecord.findByIdAndUpdate(id, { Status: "verified" })
+      await BirthRecord.findByIdAndUpdate(id, { Status: "verified", SignedBy: req.employee._id})
       return res.status(200).json({ success: true });
     }
   }
@@ -230,10 +230,10 @@ const rejectRecord = (type) => {
   return async (req, res) => {
     if (type == "death") {
       const id = req.params.recordId;
-      DeathRecord.findByIdAndUpdate(id, { Status: "rejected" })
+      DeathRecord.findByIdAndUpdate(id, { Status: "rejected", SignedBy: req.employee._id })
     } else {
       const id = req.params.recordId; 
-      BirthRecord.findByIdAndUpdate(id, { Status: "rejected" })
+      BirthRecord.findByIdAndUpdate(id, { Status: "rejected", SignedBy: req.employee._id })
     }
   }
 }
