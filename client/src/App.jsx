@@ -15,6 +15,15 @@ import { useContext } from "react";
 import { Toaster } from "react-hot-toast";
 import AddUser from "./pages/Admin/AddUser";
 
+import DeathRecords from "./pages/Hospital/DeathRecords"
+import BirthRecords from "./pages/Hospital/BirthRecords"
+import HospitalDoctors from "./pages/Hospital/Users"
+
+import DeathRecordsAsp from "./pages/Asp/DeathRecords"
+import BirthRecordsAsp from "./pages/Asp/BirthRecords"
+import AddHospital from "./pages/Asp/AddHospital"
+import AspEmployees from "./pages/Asp/Employees";
+
 export default function App() {
   return (
     <UserProvider>
@@ -23,12 +32,18 @@ export default function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
 
-            {/* Admin Routes */}
-            <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
-              <Route path="/admin/dashboard" element={<Dashboard />} />
-              <Route path="/admin/add-record" element={<AddRecord/>} />
-              <Route path="/admin/users" element={<ManageUsers />} />
-              <Route path="/admin/add-user" element={<AddUser />} />
+            {/* Hospital Routes */}
+            <Route element={<PrivateRoute allowedRoles={["Hospital"]} />}>
+              <Route path="/hospital/death-records" element={<DeathRecords />} />
+              <Route path="/hospital/birth-records" element={<BirthRecords />} />
+              <Route path="/hospital/users" element={<HospitalDoctors />} />
+            </Route>
+
+            <Route element={<PrivateRoute allowedRoles={["ASP"]} />}>
+              <Route path="/asp/death-records" element={<DeathRecordsAsp />} />
+              <Route path="/asp/birth-records" element={<BirthRecordsAsp />} />
+              <Route path="/asp/employees" element={<AspEmployees />} />
+              <Route path="/asp/hospilats" element={<AddHospital />} />
             </Route>
 
             {/* Default Route */}
@@ -60,9 +75,11 @@ const Root = () => {
     return <Navigate to={"/login"} />;
   }
 
-  return user.role === "adimn" ? (
-    <Navigate to={"/admin/dashboard"} />
+  return user.organizationType === "Hospital" ? (
+    <Navigate to={"/hospital/death-records"} />
+  ) : user.organizationType === "ASP" ? (
+    <Navigate to={"/asp/death-records"} />
   ) : (
-    <Navigate to={"/user/dashboard"} />
+    <Navigate to={"/dsp/death-records"} />
   );
 };

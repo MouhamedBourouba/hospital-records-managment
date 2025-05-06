@@ -4,16 +4,16 @@ import { UserContext } from "../../context/UserContext";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import moment from "moment";
 
-function Dashboard() {
+function BirthRecords() {
   useUserAuth();
   const { user } = useContext(UserContext);
 
   return (
-    <DashboardLayout activeMenu="Dashboard">
+    <DashboardLayout activeMenu="Verify Birth Records">
       <div className="card my-5">
         <div>
           <div className="col-span-3">
-            <h2 className="text-xl md:text-2xl">Hello, {user?.fullName}</h2>
+            <h2 className="text-xl md:text-2xl">Hello, {user.fullName}</h2>
             <p className="text-xs md:text-[13px] text-gray-400 mt-1.5">
               {moment().format("dddd Do MMM YYYY")}
             </p>
@@ -25,4 +25,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default BirthRecords;

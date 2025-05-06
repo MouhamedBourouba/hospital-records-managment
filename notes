@@ -83,3 +83,7 @@ useEffect(() => {
   
   getAllRecords();
 }, []);
+
+
+  LatinFullName, BirthDate, City, Gender, FatherName, MotherName, Status, Hospital
+

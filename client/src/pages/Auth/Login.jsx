@@ -42,7 +42,20 @@ function Login() {
         localStorage.setItem("token", token);
         updateUser(response.data);
 
-        navigate("/admin/dashboard");
+        switch (response.data.organizationType) {
+          case "Hospital":
+            navigate("/hospital/death-records");
+            break;
+          case "ASP":
+            navigate("/asp/death-records");
+            break
+          case "DSP":
+            navigate("/dsp/death-records");
+            break
+          default:
+            break;
+        }
+
       }
     } catch (error) {
       console.log(error)
