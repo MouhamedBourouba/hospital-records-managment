@@ -12,6 +12,12 @@ const baseRecordFields = {
   BirthDate: {
     type: Date,
     required: true,
+    validate: {
+      validator: function(value) {
+        return value <= new Date();
+      },
+      message: 'Birth date cannot be in the future'
+    }
   },
   City: {
     type: String,
