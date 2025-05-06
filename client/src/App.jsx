@@ -43,7 +43,7 @@ export default function App() {
               <Route path="/asp/death-records" element={<DeathRecordsAsp />} />
               <Route path="/asp/birth-records" element={<BirthRecordsAsp />} />
               <Route path="/asp/employees" element={<AspEmployees />} />
-              <Route path="/asp/hospilats" element={<AddHospital />} />
+              <Route path="/asp/hospitals" element={<AddHospital />} />
             </Route>
 
             {/* Default Route */}
