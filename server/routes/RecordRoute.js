@@ -1,6 +1,6 @@
 import express from 'express';
 import { emitBirth, emitDeath } from "../routes/EventStream.js";
-import { DeathRecord, BirthRecord } from '../models/Records.js';
+import { DeathRecord, BirthRecord } from '../models/Record.js';
 import { Hospital } from '../models/Organizations.js';
 import { authorizeAspEmployee, authorizeDspEmployee, authorizeHospitalEmployee, protect } from './AuthRoute.js';
 
@@ -32,8 +32,6 @@ export const createDeathRecord = async (req, res) => {
 
     const deathRecord = await DeathRecord.create(newRecord);
 
-    emitDeath(deathRecord);
-
     res.status(201).json({
       success: true,
       data: deathRecord
@@ -52,7 +50,6 @@ export const getAllHospitalDeaths = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      count: deathRecords.length,
       data: deathRecords
     });
   } catch (error) {
@@ -133,8 +130,6 @@ export const createBirthRecord = async (req, res) => {
 
     const birthRecord = await BirthRecord.create(newRecord);
 
-    emitBirth(birthRecord);
-
     res.status(201).json({
       success: true,
       data: birthRecord
@@ -153,7 +148,6 @@ export const getAllHospitalBirths = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      count: birthRecords.length,
       data: birthRecords
     });
   } catch (error) {
@@ -207,5 +201,20 @@ router.post('birthRecord', protect, authorizeHospitalEmployee, createBirthRecord
 router.get('hospital/birthRecord', protect, authorizeHospitalEmployee, getAllHospitalBirths);
 router.get('asp/birthRecord', protect, authorizeAspEmployee, getAllAspBirths);
 router.get('dsp/birthRecord', protect, authorizeDspEmployee, getAllDspBirths);
+
+const approveRecord = (type) => {
+  return async (req, res) => {
+    if (type == "death") {
+      const { id } = req.body;
+      DeathRecord.findByIdAndUpdate(id, {Status: "verified"})
+    } else {
+      const { id } = req.body;
+      BirthRecord.findByIdAndUpdate(id, {Status: "verified"})
+    }
+  }
+}
+
+router.post("asp/approve-birth-record", protect, authorizeAspEmployee, approveRecord("birth"))
+router.post("asp/approve-death-record", protect, authorizeAspEmployee, approveRecord("death"))
 
 export default router;
