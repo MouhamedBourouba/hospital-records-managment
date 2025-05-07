@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import { valideEmail } from "../../utils/helper";
 
 function AddEmployee() {
-
   const [employeeData, setEmployeeData] = useState({
     fullName: "",
     email: "",
@@ -32,9 +31,7 @@ function AddEmployee() {
     setLoading(true);
 
     try {
-      
       await axoisInstance.post(API_PATHS.AUTH.CREATE_EMPLOYEE, employeeData);
-
       toast.success("ُEmployee Created Successfully");
 
       clearData();

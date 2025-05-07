@@ -5,7 +5,7 @@ export const API_PATHS = {
   AUTH: {
     LOGIN: "/api/login",
     GET_USER: "/api/employee",
-    CREATE_EMPLOYEE: "/api/register-employee"
+    CREATE_EMPLOYEE: "/api/register-employee", 
   },
 
 
