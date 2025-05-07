@@ -28,6 +28,10 @@ export const API_PATHS = {
     DSP: {
       GET_ALL_BIRTH_RECORDS: "/api/dsp/birth-record/",
       GET_ALL_DEATH_RECORDS: "/api/dsp/death-record/",
+    },
+    RSH: {
+      GET_ALL_BIRTH_RECORDS: "/api/birth-anonym/",
+      GET_ALL_DEATH_RECORDS: "/api/death-anonym/",
     }
   },
 

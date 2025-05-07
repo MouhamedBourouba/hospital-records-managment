@@ -25,7 +25,7 @@ export const SIDE_MENU_HOSPITAL = [
     id: "03",
     label: "Add Employee",
     icon: LuUsers,
-    path: "/hospital/Employee",
+    path: "/hospital/employees",
   },
   {
     id: "05",
@@ -92,6 +92,27 @@ export const SIDE_MENU_DSP = [
     label: "Add Organization",
     icon: LuBuilding,
     path: "/dsp/asps",
+  },
+  {
+    id: "04",
+    label: "Logout",
+    icon: LuLogOut,
+    path: "logout",
+  },
+];
+
+export const SIDE_MENU_RSH = [
+  {
+    id: "01",
+    label: "Death Records",
+    icon: LuX,
+    path: "/rsh/death-records",
+  },
+  {
+    id: "02",
+    label: "Birth Records",
+    icon: LuBaby,
+    path: "/rsh/birth-records",
   },
   {
     id: "04",

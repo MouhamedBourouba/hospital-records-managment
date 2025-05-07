@@ -52,6 +52,8 @@ function Login() {
           case "DSP":
             navigate("/dsp/death-records");
             break
+          case "RSH":
+            navigate("/rsh/death-records");
           default:
             break;
         }

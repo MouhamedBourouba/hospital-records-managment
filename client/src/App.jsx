@@ -22,6 +22,10 @@ import AddBirth from "./pages/Hospital/AddBirth"
 import DeathRecordsAsp from "./pages/Asp/DeathRecords"
 import BirthRecordsAsp from "./pages/Asp/BirthRecords"
 
+// RSH
+import DeathRecordsRsh from "./pages/Rsh/DeathRecords"
+import BirthRecordsRsh from "./pages/Rsh/BirthRecords"
+
 // DSP
 import DeathRecordsDsp from "./pages/Dsp/DeathRecords"
 import BirthRecordsDsp from "./pages/Dsp/BirthRecords"
@@ -65,6 +69,12 @@ export default function App() {
               <Route path="/dsp/add-rsh" element={<AddEmployee
                 jobTitle="Researcher"
                 apiPath={API_PATHS.CREATE_RESEARCHER} />} />
+            </Route>
+
+            {/* Researcher Routes */}
+            <Route element={<PrivateRoute allowedRoles={["RSH"]} />}>
+              <Route path="/rsh/death-records" element={<DeathRecordsRsh />} />
+              <Route path="/rsh/birth-records" element={<BirthRecordsRsh />} />
             </Route>
 
             {/* Default Route */}
