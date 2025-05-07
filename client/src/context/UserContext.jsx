@@ -20,12 +20,7 @@ const UserProvider = ({ children }) => {
     const fetchUser = async () => {
       try {
         const response = await axoisInstance.get(API_PATHS.AUTH.GET_USER);
-        console.log(response.data)
         setUser(response.data);
-        localStorage.setItem("token", response.data.token)
-
-        console.log(response.data)
-
       } catch (error) {
         console.error("User not authenticated", error);
         clearUser();
