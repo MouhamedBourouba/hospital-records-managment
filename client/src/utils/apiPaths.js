@@ -22,6 +22,10 @@ export const API_PATHS = {
       REJECT_BIRTH_RECORD: "/api/asp/reject-birth-record/",
       APPROVE_DEATH_RECORD: "/api/asp/approve-death-record/",
       REJECT_DEATH_RECORD: "/api/asp/reject-death-record/"
+    },
+    DSP: {
+      GET_ALL_BIRTH_RECORDS: "/api/dsp/birth-record/",
+      GET_ALL_DEATH_RECORDS: "/api/dsp/death-record/",
     }
   },
 

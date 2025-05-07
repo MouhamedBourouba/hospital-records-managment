@@ -21,10 +21,14 @@ import AddBirth from "./pages/Hospital/AddBirth"
 // ASP
 import DeathRecordsAsp from "./pages/Asp/DeathRecords"
 import BirthRecordsAsp from "./pages/Asp/BirthRecords"
-import AddHospital from "./pages/Asp/AddHospital"
+
+// DSP
+import DeathRecordsDsp from "./pages/Dsp/DeathRecords"
+import BirthRecordsDsp from "./pages/Dsp/BirthRecords"
 
 // shared
 import AddEmployee from "./pages/shared/AddEmployee"
+import AddOrganization from "./pages/shared/AddOrganization"
 
 export default function App() {
   return (
@@ -43,15 +47,21 @@ export default function App() {
               <Route path="/hospital/employees" element={<AddEmployee />} />
             </Route>
 
-
             {/* ASP Routes */}
             <Route element={<PrivateRoute allowedRoles={["ASP"]} />}>
               <Route path="/asp/death-records" element={<DeathRecordsAsp />} />
               <Route path="/asp/birth-records" element={<BirthRecordsAsp />} />
               <Route path="/asp/employees" element={<AddEmployee />} />
-              <Route path="/asp/hospitals" element={<AddHospital />} />
+              <Route path="/asp/hospitals" element={<AddOrganization />} />
             </Route>
 
+            {/* DSP Routes */}
+            <Route element={<PrivateRoute allowedRoles={["DSP"]} />}>
+              <Route path="/dsp/death-records" element={<DeathRecordsDsp />} />
+              <Route path="/dsp/birth-records" element={<BirthRecordsDsp />} />
+              <Route path="/dsp/employees" element={<AddEmployee />} />
+              <Route path="/dsp/asps" element={<AddOrganization />} />
+            </Route>
 
             {/* Default Route */}
             <Route path="/" element={<Root />} />

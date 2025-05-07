@@ -72,19 +72,19 @@ export const SIDE_MENU_DSP = [
     id: "01",
     label: "Death Records",
     icon: LuX,
-    path: "/user/dashboard",
+    path: "/dsp/death-records",
   },
   {
     id: "02",
     label: "Birth Records",
     icon: LuBaby,
-    path: "/user/dashboard",
+    path: "/dsp/birth-records",
   },
   {
     id: "03",
-    label: "Add ASP",
+    label: "Add Organization",
     icon: LuBuilding,
-    path: "/user/dashboard",
+    path: "/dsp/asps",
   },
   {
     id: "04",

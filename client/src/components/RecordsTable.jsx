@@ -37,7 +37,7 @@ const RecordsTable = ({
 
   const approveRecord = async (record) => {
     try {
-      const path = recordTabelType == RecordTabelType.BirthTabe ? 
+      const path = recordTabelType == RecordTabelType.BirthTabe ?
         API_PATHS.RECORDS.ASP.APPROVE_BIRTH_RECORD :
         API_PATHS.RECORDS.ASP.APPROVE_DEATH_RECORD;
 
@@ -50,7 +50,7 @@ const RecordsTable = ({
 
   const rejectRecord = async (record) => {
     try {
-      const path = recordTabelType == RecordTabelType.BirthTabe ? 
+      const path = recordTabelType == RecordTabelType.BirthTabe ?
         API_PATHS.RECORDS.ASP.REJECT_BIRTH_RECORD :
         API_PATHS.RECORDS.ASP.REJECT_DEATH_RECORD;
 
@@ -69,9 +69,11 @@ const RecordsTable = ({
             <th className="py-3 px-4 text-gray-800 font-medium text-[13px]">
               Full Name
             </th>
+
             <th className="py-3 px-4 text-gray-800 font-medium text-[13px]">
               City
             </th>
+
             <th className="py-3 px-4 text-gray-800 font-medium text-[13px] hidden md:table-cell">
               Gender
             </th>
@@ -85,10 +87,10 @@ const RecordsTable = ({
                 Death Date
               </th>
             ) : null}
-
-            <th className="py-3 px-4 text-gray-800 font-medium text-[13px] hidden md:table-cell">
-              Status
-            </th>
+            {recordTableOrganization != RecordTabelOrganizationType.DSP ?
+              <th className="py-3 px-4 text-gray-800 font-medium text-[13px] hidden md:table-cell">
+                Status
+              </th> : null}
           </tr>
         </thead>
         <tbody>
@@ -130,15 +132,16 @@ const RecordsTable = ({
                 </td>
               ) : null}
 
-              <td className="p-4">
-                <span
-                  className={`${getStatusBadgeColor(
-                    user.Status
-                  )} px-2 py-1 text-xs rounded inline-block`}
-                >
-                  {user.Status}
-                </span>
-              </td>
+              {recordTableOrganization != RecordTabelOrganizationType.DSP ?
+                <td className="p-4">
+                  <span
+                    className={`${getStatusBadgeColor(
+                      user.Status
+                    )} px-2 py-1 text-xs rounded inline-block`}
+                  >
+                    {user.Status}
+                  </span>
+                </td> : null}
 
               {
                 recordTableOrganization == RecordTabelOrganizationType.ASP

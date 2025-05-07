@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ASP, DSP, Hospital } from "../models/Organizations.js";
+import { ASP, Hospital } from "../models/Organizations.js";
 import { protect } from "./AuthRoute.js";
 
 const orgsRoute = Router();
@@ -16,8 +16,7 @@ const createOrganization = async (req, res) => {
     })
   } else if (auther.organizationType == "DSP") {
     await ASP.create({ organization: "ASP", dspAffiliation: req.employee.organization, name: name })
-
-    return res.status(401).json({
+    return res.status(200).json({
       success: true,
     })
   }
