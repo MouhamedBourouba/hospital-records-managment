@@ -9,7 +9,7 @@ import {
   protect,
 } from "./AuthRoute.js";
 import { createBirthAnonym, createDeathAnonym } from "./AnonymRoute.js";
-import { GenerateDeathRecordPDF } from "../services/PdfService.js";
+import { GenerateBirthRecordPDF, GenerateDeathRecordPDF } from "../services/PdfService.js";
 
 const router = express.Router();
 
@@ -311,6 +311,61 @@ export const getStatistique = async (req, res) => {
   }
 };
 
+const getBirthPdf = async (req, res) => {
+  try {
+    const record = await BirthRecord.findById(req.params.id);
+
+    if (record.Status != "verified") {
+      return res.status(400).json({
+        success: false,
+        message: "Can't generate pdf for unverified record"
+      })
+    }
+
+    if (!record) return res.status(404).json({ message: 'Record not found' });
+
+    const pdf = await GenerateBirthRecordPDF(record);
+
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'inline; filename=death_record.pdf',
+      'Content-Length': pdf.length,
+    });
+
+    res.send(pdf);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to generate PDF' });
+  }
+}
+const getDeathPdf = async (req, res) => {
+  try {
+    const record = await DeathRecord.findById(req.params.id);
+
+    if (record.Status != "verified") {
+      return res.status(400).json({
+        success: false,
+        message: "Can't generate pdf for unverified record"
+      })
+    }
+
+    if (!record) return res.status(404).json({ message: 'Record not found' });
+
+    const pdf = await GenerateDeathRecordPDF(record);
+
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'inline; filename=death_record.pdf',
+      'Content-Length': pdf.length,
+    });
+
+    res.send(pdf);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to generate PDF' });
+  }
+}
+
 // hospital routes
 router.post(
   "/death-record",
@@ -365,44 +420,15 @@ router.post(
   rejectRecord("death")
 );
 
-
 // dsp routes
 router.get("/dsp/death-record", protect, authorizeDspEmployee, getAllDspDeaths);
 router.get("/dsp/birth-record", protect, authorizeDspEmployee, getAllDspBirths);
 
-// general routes
+// statistics
 router.get("/statistics/birth-death", protect, getStatistique);
 
-
-const getDeathPdf = async (req, res) => {
-  try {
-    const record = await DeathRecord.findById(req.params.id);
-
-    if(record.Status != "verified") {
-      return res.status(400).json({
-        success: false,
-        message: "Can't generate pdf for unverified record"
-      })
-    }
-
-    if (!record) return res.status(404).json({ message: 'Record not found' });
-
-    const pdf = await GenerateDeathRecordPDF(record);
-
-    res.set({
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': 'inline; filename=death_record.pdf',
-      'Content-Length': pdf.length,
-    });
-
-    res.send(pdf);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Failed to generate PDF' });
-  }
-}
-
-router.get("/birth-record/:id/pdf", protect, getDeathPdf)
+// pdfs
+router.get("/birth-record/:id/pdf", protect, getBirthPdf)
 router.get("/death-record/:id/pdf", protect, getDeathPdf)
 
 export default router;
