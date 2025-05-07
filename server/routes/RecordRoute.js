@@ -119,20 +119,6 @@ export const getAllDspDeaths = async (req, res) => {
   }
 };
 
-router.post(
-  "/death-record",
-  protect,
-  authorizeHospitalEmployee,
-  createDeathRecord
-);
-router.get(
-  "/hospital/death-record",
-  protect,
-  authorizeHospitalEmployee,
-  getAllHospitalDeaths
-);
-router.get("/asp/death-record", protect, authorizeAspEmployee, getAllAspDeaths);
-router.get("/dsp/death-record", protect, authorizeDspEmployee, getAllDspDeaths);
 
 export const createBirthRecord = async (req, res) => {
   try {
@@ -234,20 +220,6 @@ export const getAllDspBirths = async (req, res) => {
   }
 };
 
-router.post(
-  "/birth-record",
-  protect,
-  authorizeHospitalEmployee,
-  createBirthRecord
-);
-router.get(
-  "/hospital/birth-record",
-  protect,
-  authorizeHospitalEmployee,
-  getAllHospitalBirths
-);
-router.get("/asp/birth-record", protect, authorizeAspEmployee, getAllAspBirths);
-router.get("/dsp/birth-record", protect, authorizeDspEmployee, getAllDspBirths);
 
 const approveRecord = (type) => {
   return async (req, res) => {
@@ -269,18 +241,6 @@ const approveRecord = (type) => {
   };
 };
 
-router.post(
-  "/asp/approve-birth-record/:recordId",
-  protect,
-  authorizeAspEmployee,
-  approveRecord("birth")
-);
-router.post(
-  "/asp/approve-death-record/:recordId",
-  protect,
-  authorizeAspEmployee,
-  approveRecord("death")
-);
 
 const rejectRecord = (type) => {
   return async (req, res) => {
@@ -313,7 +273,6 @@ router.post(
   rejectRecord("death")
 );
 
-// ================== Charts ==================
 async function getBirthAndDeathCounts(organizationType, organization) {
 
   try {
@@ -360,6 +319,54 @@ export const getStatistique = async (req, res) => {
   }
 };
 
+// hospital routes
+router.post(
+  "/death-record",
+  protect,
+  authorizeHospitalEmployee,
+  createDeathRecord
+);
+router.post(
+  "/birth-record",
+  protect,
+  authorizeHospitalEmployee,
+  createBirthRecord
+);
+router.get(
+  "/hospital/death-record",
+  protect,
+  authorizeHospitalEmployee,
+  getAllHospitalDeaths
+);
+router.get(
+  "/hospital/birth-record",
+  protect,
+  authorizeHospitalEmployee,
+  getAllHospitalBirths
+);
+
+
+// asp routes
+router.get("/asp/death-record", protect, authorizeAspEmployee, getAllAspDeaths);
+router.get("/asp/birth-record", protect, authorizeAspEmployee, getAllAspBirths);
+router.post(
+  "/asp/approve-birth-record/:recordId",
+  protect,
+  authorizeAspEmployee,
+  approveRecord("birth")
+);
+router.post(
+  "/asp/approve-death-record/:recordId",
+  protect,
+  authorizeAspEmployee,
+  approveRecord("death")
+);
+
+// dsp routes
+router.get("/dsp/death-record", protect, authorizeDspEmployee, getAllDspDeaths);
+router.get("/dsp/birth-record", protect, authorizeDspEmployee, getAllDspBirths);
+
+// general routes
 router.get("/statistics/birth-death", protect, getStatistique);
 
 export default router;
