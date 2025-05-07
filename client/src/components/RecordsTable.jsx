@@ -1,6 +1,21 @@
 import moment from "moment";
 
-const RecordsTable = ({ tableData, isLoading }) => {
+export const RecordTabelType = {
+  DeathTabel: 0,
+  BirthTabe: 1,
+}
+export const RecordTabelOrganizationType = {
+  Hospital: 0,
+  ASP: 1,
+  DSP: 2
+}
+
+const RecordsTable = ({
+  tableData,
+  isLoading,
+  recordTabelType = RecordTabelType.BirthTabe,
+  recordTableOrganization = RecordTabelOrganizationType.Hospital
+}) => {
   const getStatusBadgeColor = (status) => {
     switch (status) {
       case "verified":
@@ -28,9 +43,16 @@ const RecordsTable = ({ tableData, isLoading }) => {
             <th className="py-3 px-4 text-gray-800 font-medium text-[13px] hidden md:table-cell">
               Gender
             </th>
+
             <th className="py-3 px-4 text-gray-800 font-medium text-[13px] hidden md:table-cell">
               Birth Date
             </th>
+
+            {recordTabelType == RecordTabelType.DeathTabel ? (
+              <th className="py-3 px-4 text-gray-800 font-medium text-[13px] hidden md:table-cell">
+                Death Date
+              </th>
+            ) : null}
 
             <th className="py-3 px-4 text-gray-800 font-medium text-[13px] hidden md:table-cell">
               Status
@@ -40,7 +62,7 @@ const RecordsTable = ({ tableData, isLoading }) => {
         <tbody>
           {isLoading && <tr className="border-t border-gray-200 text-center">
             <td className="p-4" colSpan={5}>Loading...</td>
-            </tr>}
+          </tr>}
           {tableData.map((user) => (
             <tr key={user._id} className="border-t border-gray-200">
               <td className="p-4">
@@ -68,6 +90,13 @@ const RecordsTable = ({ tableData, isLoading }) => {
                   ? moment(user.BirthDate).format("Do MMM YYYY")
                   : "N/A"}
               </td>
+
+              {recordTabelType == RecordTabelType.DeathTabel ? (
+                <td className="p-4 text-gray-700 text-[13px] text-nowrap hidden md:table-cell">
+                  {user.DateOfDeath ? moment(user.DateOfDeath).format("Do MMM YYYY")
+                    : "N/A"}
+                </td>
+              ) : null}
 
               <td className="p-4">
                 <span

@@ -7,7 +7,7 @@ import { API_PATHS } from "../../utils/apiPaths";
 import axoisInstance from "../../utils/axiosInstance";
 import { LuSquarePlus } from "react-icons/lu";
 import { Link } from "react-router-dom";
-import RecordListTabel from "../../components/RecordsTable";
+import RecordListTabel, { RecordTabelType } from "../../components/RecordsTable";
 
 function DeathRecords() {
   useUserAuth();
@@ -61,6 +61,7 @@ function DeathRecords() {
             <h3 className="text-lg md:text-xl font-medium mb-6">Birth Records</h3>
             <RecordListTabel
               tableData={deathRecordsData || []}
+              recordTabelType={RecordTabelType.DeathTabel}
               isLoading={isLoading}
             />
           </div>
