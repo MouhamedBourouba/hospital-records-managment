@@ -196,7 +196,7 @@ export const getAllAspBirths = async (req, res) => {
   try {
     res.status(200).json({
       success: true,
-      data: getAspBirths(req.employee.organization),
+      data: await getAspBirths(req.employee.organization),
     });
   } catch (error) {
     res.status(500).json({

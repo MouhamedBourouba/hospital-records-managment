@@ -1,29 +1,33 @@
 import { Router } from "express";
 import { ASP, DSP, Hospital } from "../models/Organizations.js";
-import Employee from "../models/Employee.js"
+import { protect } from "./AuthRoute.js";
 
 const orgsRoute = Router();
 
-const createHospital = async (req, res) => {
-  const { name, employeeName, employeeEmail } = req.body;
+const createOrganization = async (req, res) => {
+  const { name, } = req.body;
 
   const auther = req.employee;
-  if (auther.organizationType != "ASP") {
-    return res.status(403).json({ message: 'Access denied. Cant create hospital if you are not asp.' });
+
+  if (auther.organizationType == "ASP") {
+    await Hospital.create({ organization: "Hospital", aspAffiliation: req.employee.organization, name: name })
+    return res.status(200).json({
+      success: true,
+    })
+  } else if (auther.organizationType == "DSP") {
+    await ASP.create({ organization: "ASP", dspAffiliation: req.employee.organization, name: name })
+
+    return res.status(401).json({
+      success: true,
+    })
   }
 
-  const hospital = await Hospital.create({ organization: "Hospital", aspAffiliation: req.asp._id, name: name })
-  const employee = await Employee.create({ organization: hospital._id, email: name, fullName: "init" })
-
-  res.status(200).json({
-    employee: auther
+  return res.status(401).json({
+    success: false,
+    message: "unauthorazed"
   })
 }
 
-const createAsp = async (req, res) => {
-
-}
-
-orgsRoute.post("/hospital", createHospital)
+orgsRoute.post("/organization", protect, createOrganization)
 
 export default orgsRoute;

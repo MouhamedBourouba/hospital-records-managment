@@ -5,7 +5,6 @@ import DashboardLayout from "../../components/layouts/DashboardLayout";
 import moment from "moment";
 import { API_PATHS } from "../../utils/apiPaths";
 import axoisInstance from "../../utils/axiosInstance";
-import { Link } from "react-router-dom";
 import RecordListTabel, { RecordTabelOrganizationType, RecordTabelType } from "../../components/RecordsTable";
 
 function DeathRecords() {
@@ -53,7 +52,7 @@ function DeathRecords() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap6 my-4 md:my-6">
         <div className="md:col-span-2">
           <div className="card">
-            <h3 className="text-lg md:text-xl font-medium mb-6">Birth Records</h3>
+            <h3 className="text-lg md:text-xl font-medium mb-6">Death Records</h3>
             <RecordListTabel
               tableData={deathRecordsData || []}
               recordTabelType={RecordTabelType.DeathTabel}

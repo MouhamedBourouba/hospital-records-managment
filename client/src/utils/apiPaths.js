@@ -24,4 +24,6 @@ export const API_PATHS = {
       REJECT_DEATH_RECORD: "/api/asp/reject-death-record/"
     }
   },
+
+  CREATE_ORG: "/api/organization"
 };

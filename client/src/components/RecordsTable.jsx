@@ -2,6 +2,7 @@ import moment from "moment";
 import axoisInstance from "../utils/axiosInstance";
 import { LuCheck, LuX } from "react-icons/lu";
 import { API_PATHS } from "../utils/apiPaths";
+import { useNavigate } from "react-router-dom"
 
 export const RecordTabelType = {
   DeathTabel: 0,
@@ -19,6 +20,8 @@ const RecordsTable = ({
   recordTabelType = RecordTabelType.BirthTabe,
   recordTableOrganization = RecordTabelOrganizationType.Hospital
 }) => {
+  const navigate = useNavigate()
+
   const getStatusBadgeColor = (status) => {
     switch (status) {
       case "verified":
@@ -38,8 +41,8 @@ const RecordsTable = ({
         API_PATHS.RECORDS.ASP.APPROVE_BIRTH_RECORD :
         API_PATHS.RECORDS.ASP.APPROVE_DEATH_RECORD;
 
-      const res = await axoisInstance.post(path + record._id)
-      console.log(res)
+      await axoisInstance.post(path + record._id)
+      navigate(0)
     } catch (e) {
       console.log(e)
     }
@@ -47,16 +50,12 @@ const RecordsTable = ({
 
   const rejectRecord = async (record) => {
     try {
-      console.log("klafjsakldfjasdlk;jfkljfakl;sj")
       const path = recordTabelType == RecordTabelType.BirthTabe ? 
         API_PATHS.RECORDS.ASP.REJECT_BIRTH_RECORD :
         API_PATHS.RECORDS.ASP.REJECT_DEATH_RECORD;
 
-      console.log(path)
-
-      const res = await axoisInstance.post(path + record._id)
-      console.log(path)
-      console.log(res)
+      await axoisInstance.post(path + record._id)
+      navigate(0)
     } catch (e) {
       console.log(e)
     }
