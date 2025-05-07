@@ -75,22 +75,25 @@ export const getAllHospitalDeaths = async (req, res) => {
   }
 };
 
+const getAspDeaths = async (org) => {
+  const deathRecords = await DeathRecord.find({});
+  const filtered = [];
+
+  for (const death of deathRecords) {
+    const hospital = await Hospital.findById(death.Hospital);
+    if (hospital != null)
+      if (hospital.aspAffiliation.equals(org)) {
+        filtered.push(death);
+      }
+  }
+  return filtered;
+}
+
 export const getAllAspDeaths = async (req, res) => {
   try {
-    const deathRecords = await DeathRecord.find({});
-    const filtered = [];
-
-    for (const death of deathRecords) {
-      const hospital = await Hospital.findById(death.Hospital);
-      if (hospital != null)
-        if (hospital.aspAffiliation.equals(req.employee.organization)) {
-          filtered.push(death);
-        }
-    }
-
     res.status(200).json({
       success: true,
-      data: filtered,
+      data: getAspDeaths(req.employee.organization),
     });
   } catch (error) {
     console.log(error);
@@ -189,21 +192,24 @@ export const getAllHospitalBirths = async (req, res) => {
   }
 };
 
+const getAspBirths = async (org) => {
+  const birthRecords = await BirthRecord.find({});
+  const filtered = [];
+
+  for (const death of birthRecords) {
+    const hospital = await Hospital.findById(death.Hospital);
+    if (hospital.aspAffiliation.equals(org)) {
+      filtered.push(death);
+    }
+  }
+  return filtered;
+}
+
 export const getAllAspBirths = async (req, res) => {
   try {
-    const birthRecords = await BirthRecord.find({});
-    const filtered = [];
-
-    for (const death of birthRecords) {
-      const hospital = await Hospital.findById(death.Hospital);
-      if (hospital.aspAffiliation == req.employee.organization) {
-        filtered.push(death);
-      }
-    }
-
     res.status(200).json({
       success: true,
-      data: filtered,
+      data: getAspBirths(req.employee.organization),
     });
   } catch (error) {
     res.status(500).json({
@@ -308,11 +314,27 @@ router.post(
 );
 
 // ================== Charts ==================
+async function getBirthAndDeathCounts(organizationType, organization) {
 
-async function getBirthAndDeathCounts() {
   try {
-    const birthCount = await BirthRecord.countDocuments();
-    const deathCount = await DeathRecord.countDocuments();
+    let birthCount
+    let deathCount
+
+    switch (organizationType) {
+      case "Hospital":
+        console.log("ggg")
+        birthCount = await BirthRecord.countDocuments({ Hospital: organization })
+        deathCount = await DeathRecord.countDocuments({ Hospital: organization })
+        break
+      case "ASP":
+        birthCount = (await getAspBirths(organization)).length
+        deathCount = (await getAspDeaths(organization)).length
+        break
+      case "DSP":
+        birthCount = await BirthRecord.countDocuments({ Status: "verified" })
+        deathCount = await DeathRecord.countDocuments({ Status: "verified" })
+        break
+    }
 
     return { birthCount, deathCount };
   } catch (error) {
@@ -324,7 +346,7 @@ async function getBirthAndDeathCounts() {
 
 export const getStatistique = async (req, res) => {
   try {
-    let { birthCount, deathCount } = await getBirthAndDeathCounts();
+    let { birthCount, deathCount } = await getBirthAndDeathCounts(req.employee.organizationType, req.employee.organization);
 
     res.status(200).json({
       success: true,
@@ -338,6 +360,6 @@ export const getStatistique = async (req, res) => {
   }
 };
 
-router.get("/statistique/birth-death", protect, getStatistique);
+router.get("/statistics/birth-death", protect, getStatistique);
 
 export default router;
