@@ -10,21 +10,21 @@ import {
 export const SIDE_MENU_HOSPITAL = [
   {
     id: "02",
-    label: "Death records",
+    label: "Death Records",
     icon: LuX,
     path: "/hospital/death-records",
   },
   {
     id: "03",
-    label: "Birth records",
+    label: "Birth Records",
     icon: LuBaby,
     path: "/hospital/birth-records",
   },
   {
     id: "03",
-    label: "Doctors",
+    label: "Add employees",
     icon: LuUsers,
-    path: "/hospital/users",
+    path: "/hospital/employees",
   },
   {
     id: "05",

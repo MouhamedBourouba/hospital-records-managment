@@ -1,5 +1,0 @@
-GET api/login {id, passcode}
-POST api/regesterUser {phoneNumber, role} token
-
-POST api/record-death
-POST api/record-birth

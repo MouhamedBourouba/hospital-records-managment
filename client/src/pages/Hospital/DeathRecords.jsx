@@ -1,11 +1,15 @@
-import React from "react";
+import { useContext } from "react";
+import { useUserAuth } from "../../hooks/useUserAuth";
+import { UserContext } from "../../context/UserContext";
+import DashboardLayout from "../../components/layouts/DashboardLayout";
+import moment from "moment";
 
 function DeathRecords() {
   useUserAuth();
   const { user } = useContext(UserContext);
 
   return (
-    <DashboardLayout activeMenu="Death records">
+    <DashboardLayout activeMenu="Death Records">
       <div className="card my-5">
         <div>
           <div className="col-span-3">

@@ -63,7 +63,7 @@ function AddEmployee() {
   };
 
   return (
-    <DashboardLayout activeMenu={"Create Task"}>
+    <DashboardLayout activeMenu={"Add employees"}>
       <div className="mt-5">
         <div className="grid grid-cols-1 md:grid-cols-4 mt-4">
           <div className="form-card col-span-3">
