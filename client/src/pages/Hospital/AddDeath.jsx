@@ -3,9 +3,10 @@ import axoisInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { useUserAuth } from "../../hooks/useUserAuth";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function AddDeath() {
-  useUserAuth()
+  useUserAuth();
   const [formData, setFormData] = useState({
     ArabicFullName: "",
     LatinFullName: "",
@@ -20,50 +21,64 @@ function AddDeath() {
   });
 
   const [message, setMessage] = useState("");
-  const navigator = useNavigate()
+  const navigator = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axoisInstance.post(API_PATHS.RECORDS.HOSPITAL.CREATE_DEATH_RECORD, formData);
-      navigator("/hospital/death-records")
+      await axoisInstance.post(
+        API_PATHS.RECORDS.HOSPITAL.CREATE_DEATH_RECORD,
+        formData
+      );
+      toast.success("Birth record added Successfully");
+      navigator("/hospital/death-records");
     } catch (error) {
       console.error(error);
       setMessage(error.response?.data?.message || "Error submitting record.");
     }
   };
 
-  const TextField = (name, placeHolder) => {
-    return (
-      <div className="flex flex-col">
-        <label className="text-xs font-medium text-slate-600">
-          {name}
-        </label>
-
-        <input
-          name={name}
-          placeholder={placeHolder}
-          className="form-input"
-          value={formData[name]}
-          onChange={handleChange}
-        />
-      </div>
-    )
-  }
-
   return (
     <div className="w-screen h-screen flex items-center">
       <div className="form-card mx-auto w-full max-w-4xl">
-        <h2 className="text-2xl font-bold mb-4 text-slate-700">Submit Death Record</h2>
+        <h2 className="text-2xl font-bold mb-4 text-slate-700">
+          Submit Death Record
+        </h2>
 
         <form onSubmit={handleSubmit} className="grid gap-4 grid-cols-2">
-          {TextField("ArabicFullName", "Enter Arabic Fullname: ")}
-          {TextField("LatinFullName", "Enter Latin Fullname: ")}
+          
+          <div className="flex flex-col">
+            <label className="text-xs font-medium text-slate-600">
+              Arabic full name :
+            </label>
+
+            <input
+              name={"ArabicFullName"}
+              placeholder={"Enter Arabic Fullname"}
+              className="form-input"
+              value={formData.ArabicFullName}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-xs font-medium text-slate-600">
+            Latin full name :
+            </label>
+
+            <input
+              name={"LatinFullName"}
+              placeholder={"Enter latin full name"}
+              className="form-input"
+              value={formData.LatinFullName}
+              onChange={handleChange}
+            />
+          </div>
 
           <div className="flex flex-col">
             <label className="text-xs font-medium text-slate-600">
@@ -74,7 +89,8 @@ function AddDeath() {
               name="BirthDate"
               className="form-input"
               value={formData.BirthDate}
-              onChange={handleChange} required
+              onChange={handleChange}
+              required
             />
           </div>
 
@@ -87,19 +103,55 @@ function AddDeath() {
               name="DateOfDeath"
               className="form-input"
               value={formData.DateOfDeath}
-              onChange={handleChange} required
+              onChange={handleChange}
+              required
             />
           </div>
 
-          {TextField("PlaceOfDeath", "Place of Death: ")}
-          {TextField("CauseOfDeath", "Cause of Death: ")}
+          <div className="flex flex-col">
+            <label className="text-xs font-medium text-slate-600">
+            Place of death :
+            </label>
 
-          {TextField("City", "City: ")}
+            <input
+              name={"PlaceOfDeath"}
+              placeholder={"Place of death"}
+              className="form-input"
+              value={formData.PlaceOfDeath}
+              onChange={handleChange}
+            />
+          </div>
 
           <div className="flex flex-col">
             <label className="text-xs font-medium text-slate-600">
-              Gender
+            Cause of death :
             </label>
+
+            <input
+              name={"CauseOfDeath"}
+              placeholder={"Cause of death"}
+              className="form-input"
+              value={formData.CauseOfDeath}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-xs font-medium text-slate-600">
+            City :
+            </label>
+
+            <input
+              name={"City"}
+              placeholder={"City"}
+              className="form-input"
+              value={formData.City}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-xs font-medium text-slate-600">Gender</label>
 
             <select
               name="Gender"
@@ -113,10 +165,40 @@ function AddDeath() {
             </select>
           </div>
 
-          {TextField("FatherName", "Father's Full Name")}
-          {TextField("MotherName", "Mother's Full Name")}
+          <div className="flex flex-col">
+            <label className="text-xs font-medium text-slate-600">
+            Father's full name :
+            </label>
 
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 col-span-2 rounded hover:bg-blue-700">Submit</button>
+            <input
+              name={"FatherName"}
+              placeholder={"Father's full name"}
+              className="form-input"
+              value={formData.FatherName}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-xs font-medium text-slate-600">
+            Mother's full name :
+            </label>
+
+            <input
+              name={"MotherName"}
+              placeholder={"Mother's full name"}
+              className="form-input"
+              value={formData.MotherName}
+              onChange={handleChange}
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 col-span-2 rounded hover:bg-blue-700 cursor-pointer"
+          >
+            Submit
+          </button>
         </form>
         {message && <p className="mt-4 text-red-600">{message}</p>}
       </div>
@@ -124,4 +206,4 @@ function AddDeath() {
   );
 }
 
-export default AddDeath
+export default AddDeath;

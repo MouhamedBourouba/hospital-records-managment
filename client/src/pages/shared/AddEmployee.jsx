@@ -37,6 +37,12 @@ function AddEmployee() {
       clearData();
     } catch (error) {
       console.error("Error creating employee: ", error);
+      // console.log(error.response.data.message === "Employee already exists")
+      if(error.status === 400 && error.response.data.message === "Employee already exists") {
+        setError(error.response.data.message);
+      } else {
+        setError("Server error. Please try again later.")
+      }
       setLoading(false);
     } finally {
       setLoading(false);
