@@ -15,6 +15,7 @@ import { Toaster } from "react-hot-toast";
 // Hospital
 import DeathRecordsHospital from "./pages/Hospital/DeathRecords"
 import BirthRecordsHospital from "./pages/Hospital/BirthRecords"
+import AddDeath from "./pages/Hospital/AddDeath"
 
 // ASP
 import DeathRecordsAsp from "./pages/Asp/DeathRecords"
@@ -36,6 +37,8 @@ export default function App() {
             <Route element={<PrivateRoute allowedRoles={["Hospital"]} />}>
               <Route path="/hospital/death-records" element={<DeathRecordsHospital />} />
               <Route path="/hospital/birth-records" element={<BirthRecordsHospital />} />
+              <Route path="/hospital/add-death" element={<AddDeath />} />
+              <Route path="/hospital/add-birth" element={<AddDeath />} />
               <Route path="/hospital/employees" element={<AddEmployee />} />
             </Route>
 

@@ -19,7 +19,7 @@ function BirthRecords() {
 
   const getBirthRecords = async () => {
     try {
-      const response = await axoisInstance.get(API_PATHS.RECORD.GET_ALL_RECORD);
+      const response = await axoisInstance.get(API_PATHS.RECORDS.HOSPITAL.GET_ALL_BIRTH_RECORDS);
 
       if (response.data) {
         setBirthRecordsData(response.data.data);
@@ -34,7 +34,6 @@ function BirthRecords() {
 
   useEffect(() => {
     getBirthRecords();
-
     return () => {};
   }, []);
 

@@ -6,7 +6,7 @@ import RecordRoute from "./routes/RecordRoute.js";
 import Events from "./routes/EventStream.js";
 import bodyParser from "body-parser";
 import { connectDB } from "./config/db.js";
-// import AnonymRoute from "./routes/AnonymRoute.js";
+import AnonymRoute from "./routes/AnonymRoute.js";
 import Organizations from "./routes/OrganizationsRoute.js";
 import morgan from "morgan";
 
@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 app.use("/api/", AuthRoute);
 app.use("/api/events/", Events);
 app.use("/api/", RecordRoute);
-// app.use("/api/", AnonymRoute);
+app.use("/api/", AnonymRoute);
 app.use("/api/", Organizations);
 
 app.listen(PORT, async () => {

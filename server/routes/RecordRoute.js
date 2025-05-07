@@ -345,7 +345,6 @@ router.get(
   getAllHospitalBirths
 );
 
-
 // asp routes
 router.get("/asp/death-record", protect, authorizeAspEmployee, getAllAspDeaths);
 router.get("/asp/birth-record", protect, authorizeAspEmployee, getAllAspBirths);
