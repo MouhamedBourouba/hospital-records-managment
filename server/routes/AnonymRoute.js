@@ -3,6 +3,7 @@ import crypto, { subtle } from "crypto"
 import { AnonymBirth, AnonymDeath } from "../models/Anonym.js";
 import { authorizeResearcher, protect } from "./AuthRoute.js";
 import { encode } from "punycode";
+import { Parser } from "json2csv";
 
 /**
  * Hashes a string using SHA-256 and returns a hex string.
@@ -99,9 +100,41 @@ export const getBirthAnonyms = async (_, res) => {
   }
 };
 
+const makeCvsRoute = (type) => {
+  return async (req, res) => {
+    try {
+      let records;
+      if (type == "death") {
+        records = await AnonymDeath.find({}).lean();
+      } else {
+        records = await AnonymBirth.find({}).lean();
+      }
+
+      if (!records || records.length === 0) {
+        return res.status(404).json({ message: 'No anonym death records found' });
+      }
+
+      const fields = Object.keys(records[0]);
+      const parser = new Parser({ fields });
+      const csv = parser.parse(records);
+
+      res.header('Content-Type', 'text/csv');
+      res.attachment('anonym_death_records.csv');
+      res.send(csv);
+    } catch (error) {
+      console.error('Error generating CSV:', error);
+      res.status(500).json({ message: 'Failed to generate CSV' });
+    }
+  }
+}
+
+
 const AnonymRoute = Router();
 
 AnonymRoute.get("/death-anonym", protect, authorizeResearcher, getDeathAnonyms);
 AnonymRoute.get("/birth-anonym", protect, authorizeResearcher, getBirthAnonyms);
+
+AnonymRoute.get("/death-anonym/cvs", protect, authorizeResearcher, makeCvsRoute("death"));
+AnonymRoute.get("/birth-anonym/cvs", protect, authorizeResearcher, makeCvsRoute("birth"));
 
 export default AnonymRoute;

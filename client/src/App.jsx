@@ -29,6 +29,7 @@ import BirthRecordsDsp from "./pages/Dsp/BirthRecords"
 // shared
 import AddEmployee from "./pages/shared/AddEmployee"
 import AddOrganization from "./pages/shared/AddOrganization"
+import { API_PATHS } from "./utils/apiPaths";
 
 export default function App() {
   return (
@@ -52,7 +53,7 @@ export default function App() {
               <Route path="/asp/death-records" element={<DeathRecordsAsp />} />
               <Route path="/asp/birth-records" element={<BirthRecordsAsp />} />
               <Route path="/asp/employees" element={<AddEmployee />} />
-              <Route path="/asp/hospitals" element={<AddOrganization />} />
+              <Route path="/asp/hospitals" element={<AddOrganization lable="Add Hospitals" name="Hospital"/>} />
             </Route>
 
             {/* DSP Routes */}
@@ -61,6 +62,9 @@ export default function App() {
               <Route path="/dsp/birth-records" element={<BirthRecordsDsp />} />
               <Route path="/dsp/employees" element={<AddEmployee />} />
               <Route path="/dsp/asps" element={<AddOrganization />} />
+              <Route path="/dsp/add-rsh" element={<AddEmployee
+                jobTitle="Researcher"
+                apiPath={API_PATHS.CREATE_RESEARCHER} />} />
             </Route>
 
             {/* Default Route */}

@@ -8,6 +8,8 @@ export const API_PATHS = {
     CREATE_EMPLOYEE: "/api/register-employee/",
   },
 
+  CREATE_RESEARCHER: "/api/register-researcher/",
+
   RECORDS: {
     HOSPITAL: {
       CREATE_DEATH_RECORD: "/api/death-record/",

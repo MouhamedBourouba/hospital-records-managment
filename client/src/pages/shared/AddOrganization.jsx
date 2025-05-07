@@ -5,7 +5,10 @@ import { API_PATHS } from "../../utils/apiPaths";
 import toast from "react-hot-toast";
 import { useUserAuth } from "../../hooks/useUserAuth";
 
-function AddOrganization() {
+function AddOrganization({
+  lable = "Add Organization",
+  name = "Organization"
+}) {
   useUserAuth()
   const [hospitalName, setHospitalName] = useState({
     name: "",
@@ -51,13 +54,13 @@ function AddOrganization() {
   };
 
   return (
-    <DashboardLayout activeMenu={"Add Organization"}>
+    <DashboardLayout activeMenu={lable}>
       <div className="mt-5">
         <div className="grid grid-cols-1 md:grid-cols-4 mt-4">
           <div className="form-card col-span-3">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-medium">
-                Create Organization
+                Create {name}
               </h2>
             </div>
 

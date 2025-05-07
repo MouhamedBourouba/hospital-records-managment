@@ -3,6 +3,7 @@ import {
   LuBuilding,
   LuHospital,
   LuLogOut,
+  LuSearch,
   LuUsers,
   LuX,
 } from "react-icons/lu";
@@ -22,9 +23,9 @@ export const SIDE_MENU_HOSPITAL = [
   },
   {
     id: "03",
-    label: "Add employees",
+    label: "Add Employee",
     icon: LuUsers,
-    path: "/hospital/employees",
+    path: "/hospital/Employee",
   },
   {
     id: "05",
@@ -49,7 +50,7 @@ export const SIDE_MENU_ASP = [
   },
   {
     id: "03",
-    label: "Add employees",
+    label: "Add Employee",
     icon: LuUsers,
     path: "/asp/employees",
   },
@@ -79,6 +80,12 @@ export const SIDE_MENU_DSP = [
     label: "Birth Records",
     icon: LuBaby,
     path: "/dsp/birth-records",
+  },
+  {
+    id: "03",
+    label: "Add Researcher",
+    icon: LuSearch,
+    path: "/dsp/add-rsh",
   },
   {
     id: "03",

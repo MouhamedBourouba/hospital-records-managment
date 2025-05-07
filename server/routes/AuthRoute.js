@@ -19,10 +19,9 @@ const generateRandomPassword = () => {
   return password;
 };
 
-export const registerResearcherEmployee = async (req, res) => {
+const registerResearcherEmployee = async (req, res) => {
   try {
     const { fullName, email } = req.body;
-    const employee = req.employee;
 
     const employeeExists = await Employee.findOne({ email });
     if (employeeExists) {
@@ -55,7 +54,8 @@ export const registerResearcherEmployee = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
-export const registerEmployee = async (req, res) => {
+
+const registerEmployee = async (req, res) => {
   try {
     const { fullName, email } = req.body;
     const employee = req.employee;
@@ -92,11 +92,11 @@ export const registerEmployee = async (req, res) => {
 };
 
 
-async function getEmployee(req, res) {
+function getEmployee(req, res) {
   return res.status(200).json(req.employee)
 }
 
-export const loginEmployee = async (req, res) => {
+const loginEmployee = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -187,7 +187,7 @@ export const authorizeDspEmployee = authorizeOrganizations("DSP")
 export const authorizeResearcher = authorizeOrganizations("RSH")
 
 authRoute.post("/register-employee", protect, registerEmployee);
-authRoute.post("/register-researcher", protect, authorizeDspEmployee, registerEmployee);
+authRoute.post("/register-researcher", protect, authorizeDspEmployee, registerResearcherEmployee);
 authRoute.post("/login", loginEmployee);
 authRoute.get("/employee", protect, getEmployee);
 
