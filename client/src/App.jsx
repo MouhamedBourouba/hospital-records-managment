@@ -49,7 +49,7 @@ export default function App() {
               <Route path="/hospital/birth-records" element={<BirthRecordsHospital />} />
               <Route path="/hospital/add-death" element={<AddDeath />} />
               <Route path="/hospital/add-birth" element={<AddBirth />} />
-              <Route path="/hospital/employees" element={<AddEmployee />} />
+              <Route path="/hospital/employees" element={<AddEmployee jobTitle="Doctor"/>} />
             </Route>
 
             {/* ASP Routes */}
@@ -107,10 +107,10 @@ const Root = () => {
   }
 
   return user.organizationType === "Hospital" ? (
-    <Navigate to={"/hospital/death-records"} />
+    <Navigate to={"/hospital/birth-records"} />
   ) : user.organizationType === "ASP" ? (
-    <Navigate to={"/asp/death-records"} />
+    <Navigate to={"/asp/birth-records"} />
   ) : (
-    <Navigate to={"/dsp/death-records"} />
+    <Navigate to={"/dsp/birth-records"} />
   );
 };

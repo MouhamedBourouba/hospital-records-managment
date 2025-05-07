@@ -23,7 +23,7 @@ export const SIDE_MENU_HOSPITAL = [
   },
   {
     id: "03",
-    label: "Add Employee",
+    label: "Add Doctor",
     icon: LuUsers,
     path: "/hospital/employees",
   },

@@ -116,7 +116,7 @@ function AddEmployee({
                 onClick={handleSubmit}
                 disabled={loading}
               >
-                CREATE EMPLOYEE
+                CREATE {jobTitle.toUpperCase()}
               </button>
             </div>
           </div>
