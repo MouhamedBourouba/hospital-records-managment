@@ -148,10 +148,10 @@ const RecordsTable = ({
                   && user.Status == "pending" ?
                   (<td className="w-1">
                     <div className="flex gap-2 justify-center items-center me-2">
-                      <button onClick={() => { approveRecord(user) }} className="text-green-600 hover:text-green-800">
+                      <button onClick={() => { approveRecord(user) }} className="text-green-600 hover:text-green-800 cursor-pointer">
                         <LuCheck size={25} />
                       </button>
-                      <button onClick={() => { rejectRecord(user) }} className="text-red-600 hover:text-red-800">
+                      <button onClick={() => { rejectRecord(user) }} className="text-red-600 hover:text-red-800 cursor-pointer">
                         <LuX size={25} />
                       </button>
                     </div>
