@@ -104,23 +104,27 @@ const makeCvsRoute = (type) => {
   return async (req, res) => {
     try {
       let records;
-      if (type == "death") {
+      let filename;
+
+      if (type === "death") {
         records = await AnonymDeath.find({}).lean();
+        filename = "anonym_death_records.csv";
       } else {
         records = await AnonymBirth.find({}).lean();
+        filename = "anonym_birth_records.csv";
       }
 
       if (!records || records.length === 0) {
-        return res.status(404).json({ message: 'No anonym death records found' });
+        return res.status(404).json({ message: 'No anonym records found' });
       }
 
       const fields = Object.keys(records[0]);
       const parser = new Parser({ fields });
       const csv = parser.parse(records);
 
-      res.header('Content-Type', 'text/csv');
-      res.attachment('anonym_death_records.csv');
-      res.send(csv);
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+      res.status(200).send(csv);
     } catch (error) {
       console.error('Error generating CSV:', error);
       res.status(500).json({ message: 'Failed to generate CSV' });
