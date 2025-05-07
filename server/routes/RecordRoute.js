@@ -247,32 +247,21 @@ const rejectRecord = (type) => {
   return async (req, res) => {
     if (type == "death") {
       const id = req.params.recordId;
-      DeathRecord.findByIdAndUpdate(id, {
+      await DeathRecord.findByIdAndUpdate(id, {
         Status: "rejected",
         StatusUpdatedBy: req.employee._id,
       });
+      return res.status(200).json({ success: true });
     } else {
       const id = req.params.recordId;
-      BirthRecord.findByIdAndUpdate(id, {
+      await BirthRecord.findByIdAndUpdate(id, {
         Status: "rejected",
         StatusUpdatedBy: req.employee._id,
       });
+      return res.status(200).json({ success: true });
     }
   };
 };
-
-router.post(
-  "/asp/reject-birth-record/:recordId",
-  protect,
-  authorizeAspEmployee,
-  rejectRecord("birth")
-);
-router.post(
-  "/asp/reject-death-record/:recordId",
-  protect,
-  authorizeAspEmployee,
-  rejectRecord("death")
-);
 
 async function getBirthAndDeathCounts(organizationType, organization) {
 
@@ -356,11 +345,24 @@ router.post(
   approveRecord("birth")
 );
 router.post(
+  "/asp/reject-birth-record/:recordId",
+  protect,
+  authorizeAspEmployee,
+  rejectRecord("birth")
+);
+router.post(
   "/asp/approve-death-record/:recordId",
   protect,
   authorizeAspEmployee,
   approveRecord("death")
 );
+router.post(
+  "/asp/reject-death-record/:recordId",
+  protect,
+  authorizeAspEmployee,
+  rejectRecord("death")
+);
+
 
 // dsp routes
 router.get("/dsp/death-record", protect, authorizeDspEmployee, getAllDspDeaths);
