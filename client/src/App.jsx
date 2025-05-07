@@ -16,6 +16,7 @@ import { Toaster } from "react-hot-toast";
 import DeathRecordsHospital from "./pages/Hospital/DeathRecords"
 import BirthRecordsHospital from "./pages/Hospital/BirthRecords"
 import AddDeath from "./pages/Hospital/AddDeath"
+import AddBirth from "./pages/Hospital/AddBirth"
 
 // ASP
 import DeathRecordsAsp from "./pages/Asp/DeathRecords"
@@ -38,7 +39,7 @@ export default function App() {
               <Route path="/hospital/death-records" element={<DeathRecordsHospital />} />
               <Route path="/hospital/birth-records" element={<BirthRecordsHospital />} />
               <Route path="/hospital/add-death" element={<AddDeath />} />
-              <Route path="/hospital/add-birth" element={<AddDeath />} />
+              <Route path="/hospital/add-birth" element={<AddBirth />} />
               <Route path="/hospital/employees" element={<AddEmployee />} />
             </Route>
 

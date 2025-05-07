@@ -4,15 +4,12 @@ import { API_PATHS } from "../../utils/apiPaths";
 import { useUserAuth } from "../../hooks/useUserAuth";
 import { useNavigate } from "react-router-dom";
 
-function AddDeath() {
+function AddBirth() {
   useUserAuth()
   const [formData, setFormData] = useState({
     ArabicFullName: "",
     LatinFullName: "",
     BirthDate: "",
-    DateOfDeath: "",
-    PlaceOfDeath: "",
-    CauseOfDeath: "",
     City: "",
     Gender: "Male",
     FatherName: "",
@@ -30,8 +27,8 @@ function AddDeath() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axoisInstance.post(API_PATHS.RECORDS.HOSPITAL.CREATE_DEATH_RECORD, formData);
-      navigator("/hospital/death-records")
+      await axoisInstance.post(API_PATHS.RECORDS.HOSPITAL.CREATE_BIRTH_RECORD, formData);
+      navigator("/hospital/birth-records")
     } catch (error) {
       console.error(error);
       setMessage(error.response?.data?.message || "Error submitting record.");
@@ -78,22 +75,6 @@ function AddDeath() {
             />
           </div>
 
-          <div className="flex flex-col">
-            <label className="text-xs font-medium text-slate-600">
-              Death date
-            </label>
-            <input
-              type="date"
-              name="DateOfDeath"
-              className="form-input"
-              value={formData.DateOfDeath}
-              onChange={handleChange} required
-            />
-          </div>
-
-          {TextField("PlaceOfDeath", "Place of Death: ")}
-          {TextField("CauseOfDeath", "Cause of Death: ")}
-
           {TextField("City", "City: ")}
 
           <div className="flex flex-col">
@@ -124,4 +105,4 @@ function AddDeath() {
   );
 }
 
-export default AddDeath
+export default AddBirth
