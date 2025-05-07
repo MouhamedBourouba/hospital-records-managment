@@ -93,8 +93,9 @@ export const getAllAspDeaths = async (req, res) => {
   try {
     res.status(200).json({
       success: true,
-      data: getAspDeaths(req.employee.organization),
+      data: await getAspDeaths(req.employee.organization),
     });
+
   } catch (error) {
     console.log(error);
     res.status(500).json({
