@@ -2,6 +2,7 @@ import { Router } from "express";
 import jwt from 'jsonwebtoken';
 import Employee from "../models/Employee.js";
 import { sendPasswordEmail } from "../services/email.js";
+import { log } from "console";
 
 const authRoute = Router();
 
@@ -35,7 +36,7 @@ const registerResearcherEmployee = async (req, res) => {
       fullName: fullName,
       email: email,
       password: hashedPassword,
-      organization: null,
+      organization: req.employee.organization,
       organizationType: "RSH"
     }
     const newEmployee = await Employee.create(employeeData);
