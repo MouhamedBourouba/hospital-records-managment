@@ -37,13 +37,13 @@ export const SIDE_MENU_HOSPITAL = [
 export const SIDE_MENU_ASP = [
   {
     id: "01",
-    label: "Verify Birth Records",
+    label: "Birth Records",
     icon: LuBaby,
     path: "/asp/birth-records",
   },
   {
     id: "02",
-    label: "Verify Death Records",
+    label: "Death Records",
     icon: LuX,
     path: "/asp/death-records",
   },

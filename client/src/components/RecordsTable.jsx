@@ -1,4 +1,7 @@
 import moment from "moment";
+import axoisInstance from "../utils/axiosInstance";
+import { LuCheck, LuX } from "react-icons/lu";
+import { API_PATHS } from "../utils/apiPaths";
 
 export const RecordTabelType = {
   DeathTabel: 0,
@@ -28,6 +31,36 @@ const RecordsTable = ({
         return "bg-gray-100 text-gray-500 border border-gray-200";
     }
   };
+
+  const approveRecord = async (record) => {
+    try {
+      const path = recordTabelType == RecordTabelType.BirthTabe ? 
+        API_PATHS.RECORDS.ASP.APPROVE_BIRTH_RECORD :
+        API_PATHS.RECORDS.ASP.APPROVE_DEATH_RECORD;
+
+      const res = await axoisInstance.post(path + record._id)
+      console.log(res)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const rejectRecord = async (record) => {
+    try {
+      console.log("klafjsakldfjasdlk;jfkljfakl;sj")
+      const path = recordTabelType == RecordTabelType.BirthTabe ? 
+        API_PATHS.RECORDS.ASP.REJECT_BIRTH_RECORD :
+        API_PATHS.RECORDS.ASP.REJECT_DEATH_RECORD;
+
+      console.log(path)
+
+      const res = await axoisInstance.post(path + record._id)
+      console.log(path)
+      console.log(res)
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   return (
     <div className="overflow-x-auto p-0 rounded-lg mt-3">
@@ -107,6 +140,22 @@ const RecordsTable = ({
                   {user.Status}
                 </span>
               </td>
+
+              {
+                recordTableOrganization == RecordTabelOrganizationType.ASP
+                  && user.Status == "pending" ?
+                  (<td className="w-1">
+                    <div className="flex gap-2 justify-center items-center me-2">
+                      <button onClick={() => { approveRecord(user) }} className="text-green-600 hover:text-green-800">
+                        <LuCheck size={25} />
+                      </button>
+                      <button onClick={() => { rejectRecord(user) }} className="text-red-600 hover:text-red-800">
+                        <LuX size={25} />
+                      </button>
+                    </div>
+                  </td>) : null
+              }
+
             </tr>
           ))}
         </tbody>
