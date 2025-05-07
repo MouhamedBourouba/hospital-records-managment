@@ -32,6 +32,8 @@ export const API_PATHS = {
     RSH: {
       GET_ALL_BIRTH_RECORDS: "/api/birth-anonym/",
       GET_ALL_DEATH_RECORDS: "/api/death-anonym/",
+      GET_ALL_BIRTH_RECORDS_CSV: "/api/death-anonym/cvs",
+      GET_ALL_DEATH_RECORDS_CSV: "/api/death-anonym/cvs",
     }
   },
 
