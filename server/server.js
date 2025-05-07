@@ -8,12 +8,14 @@ import bodyParser from "body-parser";
 import { connectDB } from "./config/db.js";
 // import AnonymRoute from "./routes/AnonymRoute.js";
 import Organizations from "./routes/OrganizationsRoute.js";
+import morgan from "morgan";
 
 const PORT = 5000;
 
 dotenv.config();
 const app = express();
 
+app.use(morgan("dev"))
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
