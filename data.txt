@@ -1,0 +1,12 @@
+    Hospital
+        email : hospital@gmail.com
+        password : 1234
+    DSP
+        email : dsp@gmail.com
+        password : 1234
+    ASP
+        email : asp@gmail.com
+        password : ABCD
+    Court
+        email :
+        password :
