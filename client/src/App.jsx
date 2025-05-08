@@ -49,7 +49,7 @@ export default function App() {
               <Route path="/hospital/birth-records" element={<BirthRecordsHospital />} />
               <Route path="/hospital/add-death" element={<AddDeath />} />
               <Route path="/hospital/add-birth" element={<AddBirth />} />
-              <Route path="/hospital/employees" element={<AddEmployee jobTitle="Doctor"/>} />
+              <Route path="/hospital/employees" element={<AddEmployee jobTitle="Doctor" />} />
             </Route>
 
             {/* ASP Routes */}
@@ -57,7 +57,7 @@ export default function App() {
               <Route path="/asp/death-records" element={<DeathRecordsAsp />} />
               <Route path="/asp/birth-records" element={<BirthRecordsAsp />} />
               <Route path="/asp/employees" element={<AddEmployee />} />
-              <Route path="/asp/hospitals" element={<AddOrganization lable="Add Hospitals" name="Hospital"/>} />
+              <Route path="/asp/hospitals" element={<AddOrganization lable="Add Hospitals" name="Hospital" />} />
             </Route>
 
             {/* DSP Routes */}

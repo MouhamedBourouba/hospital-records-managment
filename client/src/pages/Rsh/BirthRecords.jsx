@@ -17,17 +17,45 @@ function BirthRecords() {
   const getDeathRecords = async () => {
     try {
       const response = await axoisInstance.get(API_PATHS.RECORDS.RSH.GET_ALL_BIRTH_RECORDS);
-
-      if (response.data) {
-        setDeathRecordsData(response.data.data);
-        console.log(response.data)
-      }
+      setDeathRecordsData(response.data.map(record => ({
+        ...record,
+        LatinFullName: record.HashedLatinFullName.slice(0, 5),
+      })));
     } catch (error) {
+      console.log(error)
       setIsLoading(false);
     } finally {
       setIsLoading(false);
     }
   };
+
+  const downloadCSV = async () => {
+    try {
+      const response = await axoisInstance.get(API_PATHS.RECORDS.RSH.GET_ALL_BIRTH_RECORDS_CSV, {
+        responseType: 'blob',
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'birth_records.csv'); // File name
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const copyAccessToken = async () => {
+    try {
+      await navigator.clipboard.writeText(localStorage.getItem("token"));
+      alert('Copied to clipboard!');
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  }
 
   useEffect(() => {
     getDeathRecords();
@@ -43,6 +71,10 @@ function BirthRecords() {
             <p className="text-xs md:text-[13px] text-gray-400 mt-1.5">
               {moment().format("dddd Do MMM YYYY")}
             </p>
+          </div>
+          <div>
+            <button className="download-btn me-3" onClick={downloadCSV}>Download CSV</button>
+            <button className="download-btn" onClick={copyAccessToken}>Copy Access Token</button>
           </div>
         </div>
       </div>

@@ -16,15 +16,13 @@ function DeathRecords() {
 
   const getDeathRecords = async () => {
     try {
-      const trimmedData = response.data.data.map(record => ({
+      const response = await axoisInstance.get(API_PATHS.RECORDS.RSH.GET_ALL_DEATH_RECORDS);
+      setDeathRecordsData(response.data.map(record => ({
         ...record,
-        HashedArabicFullName: record.HashedArabicFullName?.slice(0, 6),
-        HashedLatinFullName: record.HashedLatinFullName?.slice(0, 6),
-      }));
-
-      setDeathRecordsData(trimmedData);
-      console.log(trimmedData);
+        LatinFullName: record.HashedLatinFullName.slice(0, 5),
+      })));
     } catch (error) {
+      console.log(error)
       setIsLoading(false);
     } finally {
       setIsLoading(false);
@@ -36,6 +34,33 @@ function DeathRecords() {
     return () => { };
   }, []);
 
+  const downloadCSV = async () => {
+    try {
+      const response = await axoisInstance.get(API_PATHS.RECORDS.RSH.GET_ALL_DEATH_RECORDS_CSV, {
+        responseType: 'blob',
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'death_records.csv'); // File name
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const copyAccessToken = async () => {
+    try {
+      await navigator.clipboard.writeText(localStorage.getItem("token"));
+      alert('Copied to clipboard!');
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  }
 
   return (
     <DashboardLayout activeMenu="Death Records">
@@ -46,6 +71,10 @@ function DeathRecords() {
             <p className="text-xs md:text-[13px] text-gray-400 mt-1.5">
               {moment().format("dddd Do MMM YYYY")}
             </p>
+          </div>
+          <div>
+            <button className="download-btn me-3" onClick={downloadCSV}>Download CSV</button>
+            <button className="download-btn" onClick={copyAccessToken}>Copy Access Token</button>
           </div>
         </div>
       </div>
