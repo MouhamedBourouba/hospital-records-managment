@@ -83,50 +83,119 @@ The project follows a modular architecture:
    npm start
    ```
 
-## API Documentation
-
-### Authentication Endpoints
-
-| Method | Endpoint | Description | Request Body | Response |
-|--------|----------|-------------|--------------|----------|
-| POST | `/api/auth/register` | Register a new user | `{ PhoneNumber, Password, Organization, FullName, Role }` | JWT token and user data |
-| POST | `/api/auth/login` | Authenticate a user | `{ PhoneNumber, Password }` | JWT token and user data |
-
-### User Management Endpoints
-
-| Method | Endpoint | Description | Request Body/Params | Response |
-|--------|----------|-------------|--------------|----------|
-| GET | `/api/getUsers` | Get all users | - | Array of users |
-| GET | `/api/getUserById/:id` | Get user by ID | ID in URL params | User object |
-| PUT | `/api/updateUser` | Update user | `{ PhoneNumber, Organization, FullName, Role }` | Updated user |
-| DELETE | `/api/deleteUser` | Delete user | User ID | Success message |
-| POST | `/api/addUser` | Add new user | Same as register | New user data |
-
-### Record Management Endpoints
-
-| Method | Endpoint | Description | Request Body/Params | Response |
-|--------|----------|-------------|--------------|----------|
-| GET | `/api/getRecords` | Get all records | - | Array of records |
-| POST | `/api/addRecord` | Create new record | Record data | Success message |
-| PUT | `/api/updateRecord` | Update record | Updated record data | Updated record |
-| DELETE | `/api/deleteRecord` | Delete record | Record ID | Success message |
-| GET | `/api/getAnonyms` | Get anonymous records | - | Array of anonymous records |
-
-### Event Streams
-
-| Method | Endpoint | Description | Response |
-|--------|----------|-------------|----------|
-| GET | `/api/eventsDeath` | Subscribe to death events | SSE stream |
-| GET | `/api/eventsBirth` | Subscribe to birth events | SSE stream |
+# API Documentation
 
 ## Authentication
 
 The system uses JWT (JSON Web Token) for authentication. Tokens are issued upon successful login and have a 7-day expiration period.
 
 **Protected Routes**: Many endpoints require authentication. Include the JWT token in the request headers:
-```
-Authorization: Bearer <your-token>
-```
+
+
+---
+
+## Authentication Endpoints
+
+| Method | Endpoint | Description | Request Body | Response |
+|--------|----------|-------------|--------------|----------|
+| POST | `/api/auth/login` | Authenticate a user | `{ PhoneNumber, Password }` | JWT token and user data |
+| POST | `/api/auth/register-employee` | Register a new employee | `{ PhoneNumber, Password, Organization, FullName, Role }` | JWT token and user data |
+| POST | `/api/auth/register-researcher` | Register a new researcher (DSP only) | `{ PhoneNumber, Password, Organization, FullName, Role }` | JWT token and user data |
+| GET | `/api/auth/employee` | Get authenticated employee data | - | Employee object |
+
+---
+
+## Hospital Endpoints
+
+| Method | Endpoint | Description | Request Body/Params | Response |
+|--------|----------|-------------|---------------------|----------|
+| POST | `/api/death-record` | Create death record (hospital) | Death record data | Created record |
+| POST | `/api/birth-record` | Create birth record (hospital) | Birth record data | Created record |
+| GET | `/api/hospital/death-record` | Get all hospital death records | - | Array of records |
+| GET | `/api/hospital/birth-record` | Get all hospital birth records | - | Array of records |
+
+---
+
+## ASP Endpoints
+
+| Method | Endpoint | Description | Request Body/Params | Response |
+|--------|----------|-------------|---------------------|----------|
+| GET | `/api/asp/death-record` | Get all ASP death records | - | Array of records |
+| GET | `/api/asp/birth-record` | Get all ASP birth records | - | Array of records |
+| POST | `/api/asp/approve-birth-record/:recordId` | Approve a birth record | URL param `recordId` | Success message |
+| POST | `/api/asp/reject-birth-record/:recordId` | Reject a birth record | URL param `recordId` | Success message |
+| POST | `/api/asp/approve-death-record/:recordId` | Approve a death record | URL param `recordId` | Success message |
+| POST | `/api/asp/reject-death-record/:recordId` | Reject a death record | URL param `recordId` | Success message |
+
+---
+
+## DSP Endpoints
+
+| Method | Endpoint | Description | Request Body/Params | Response |
+|--------|----------|-------------|---------------------|----------|
+| GET | `/api/dsp/death-record` | Get all DSP death records | - | Array of records |
+| GET | `/api/dsp/birth-record` | Get all DSP birth records | - | Array of records |
+
+---
+
+## Anonymized Data (Researchers)
+
+| Method | Endpoint | Description | Response |
+|--------|----------|-------------|----------|
+| GET | `/api/death-anonym` | Get anonymized death records | Array of records |
+| GET | `/api/birth-anonym` | Get anonymized birth records | Array of records |
+| GET | `/api/death-anonym/cvs` | Download death anonymized data as CSV | CSV file |
+| GET | `/api/birth-anonym/cvs` | Download birth anonymized data as CSV | CSV file |
+
+---
+
+## Statistics
+
+| Method | Endpoint | Description | Response |
+|--------|----------|-------------|----------|
+| GET | `/api/statistics/birth-death` | Get birth and death statistics | Statistics object |
+
+---
+
+## PDF Generation
+
+| Method | Endpoint | Description | Response |
+|--------|----------|-------------|----------|
+| GET | `/api/birth-record/:id/pdf` | Generate PDF for birth record | PDF file |
+| GET | `/api/death-record/:id/pdf` | Generate PDF for death record | PDF file |
+
+---
+
+## Organization Management
+
+| Method | Endpoint | Description | Request Body | Response |
+|--------|----------|-------------|--------------|----------|
+| POST | `/api/organization` | Create a new organization | Organization data | Created organization |
+
+---
+
+## Event Streams
+
+The application implements Server-Sent Events (SSE) for real-time updates:
+
+| Method | Endpoint | Description | Response |
+|--------|----------|-------------|----------|
+| GET | `/api/eventsDeath` | Subscribe to death events | SSE stream |
+| GET | `/api/eventsBirth` | Subscribe to birth events | SSE stream |
+
+**Subscribing to Events (Client Example):**
+```javascript
+const deathEventSource = new EventSource('/api/eventsDeath');
+deathEventSource.onmessage = function(event) {
+  const data = JSON.parse(event.data);
+  console.log('New death record:', data);
+};
+
+const birthEventSource = new EventSource('/api/eventsBirth');
+birthEventSource.onmessage = function(event) {
+  const data = JSON.parse(event.data);
+  console.log('New birth record:', data);
+};
 
 ## Event System
 
