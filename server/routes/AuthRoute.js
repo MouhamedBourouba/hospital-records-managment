@@ -11,7 +11,7 @@ const generateToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET);
 };
 
-const generateRandomPassword = () => {
+export const generateRandomPassword = () => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let password = '';
   for (let i = 0; i < 5; i++) {
@@ -66,7 +66,6 @@ const registerEmployee = async (req, res) => {
       return res.status(400).json({ message: "Employee already exists" });
     }
 
-    // todo
     const hashedPassword = generateRandomPassword();
     const employeeData = {
       fullName: fullName,

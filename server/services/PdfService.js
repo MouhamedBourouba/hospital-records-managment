@@ -53,7 +53,7 @@ export async function GenerateBirthRecordPDF(record) {
   let y = 780;
   drawText(`Birth Certificate`, y); y -= 30;
 
-  drawText(`Arabic Name: ${record.ArabicFullName}`, y); y -= 20;
+  
   drawText(`Latin Name: ${record.LatinFullName}`, y); y -= 20;
 
   drawText(`Birth Date: ${record.BirthDate.toDateString()}`, y); y -= 20;

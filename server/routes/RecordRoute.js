@@ -315,6 +315,8 @@ const getBirthPdf = async (req, res) => {
   try {
     const record = await BirthRecord.findById(req.params.id);
 
+    if (!record) return res.status(404).json({ message: 'Record not found' });
+
     if (record.Status != "verified") {
       return res.status(400).json({
         success: false,
@@ -322,13 +324,11 @@ const getBirthPdf = async (req, res) => {
       })
     }
 
-    if (!record) return res.status(404).json({ message: 'Record not found' });
-
     const pdf = await GenerateBirthRecordPDF(record);
 
     res.set({
       'Content-Type': 'application/pdf',
-      'Content-Disposition': 'inline; filename=death_record.pdf',
+      'Content-Disposition': 'attachment; filename=birth_record.pdf',
       'Content-Length': pdf.length,
     });
 
@@ -338,9 +338,12 @@ const getBirthPdf = async (req, res) => {
     res.status(500).json({ message: 'Failed to generate PDF' });
   }
 }
-const getDeathPdf = async (req, res) => {
+export const getDeathPdf = async (req, res) => {
   try {
+
     const record = await DeathRecord.findById(req.params.id);
+
+    if (!record) return res.status(404).json({ message: 'Record not found' });
 
     if (record.Status != "verified") {
       return res.status(400).json({
@@ -348,8 +351,6 @@ const getDeathPdf = async (req, res) => {
         message: "Can't generate pdf for unverified record"
       })
     }
-
-    if (!record) return res.status(404).json({ message: 'Record not found' });
 
     const pdf = await GenerateDeathRecordPDF(record);
 
