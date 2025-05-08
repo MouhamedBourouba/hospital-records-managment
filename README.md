@@ -196,27 +196,6 @@ birthEventSource.onmessage = function(event) {
   const data = JSON.parse(event.data);
   console.log('New birth record:', data);
 };
-
-## Event System
-
-The application implements Server-Sent Events (SSE) for real-time updates:
-
-- **Birth Events**: Notifies subscribers when new birth records are added
-- **Death Events**: Notifies subscribers when new death records are added
-
-**Subscribing to Events** (client-side example):
-```javascript
-const deathEventSource = new EventSource('/api/eventsDeath');
-deathEventSource.onmessage = function(event) {
-  const data = JSON.parse(event.data);
-  console.log('New death record:', data);
-};
-
-const birthEventSource = new EventSource('/api/eventsBirth');
-birthEventSource.onmessage = function(event) {
-  const data = JSON.parse(event.data);
-  console.log('New birth record:', data);
-};
 ```
 
 ## Database Models
