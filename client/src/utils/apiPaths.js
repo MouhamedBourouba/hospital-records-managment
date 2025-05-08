@@ -35,5 +35,10 @@ export const API_PATHS = {
     }
   },
 
-  CREATE_ORG: "/api/organization"
+  CREATE_ORG: "/api/organization",
+
+  EXPORT_PDF: {
+    BIRTH: (id) => `/api/birth-record/${id}/pdf`,
+    DEATH: (id) => `/api/death-record/${id}/pdf`,
+  }, 
 };

@@ -2,25 +2,27 @@ import moment from "moment";
 import axoisInstance from "../utils/axiosInstance";
 import { LuCheck, LuX } from "react-icons/lu";
 import { API_PATHS } from "../utils/apiPaths";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import { FaRegFilePdf } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 export const RecordTabelType = {
   DeathTabel: 0,
   BirthTabe: 1,
-}
+};
 export const RecordTabelOrganizationType = {
   Hospital: 0,
   ASP: 1,
-  DSP: 2
-}
+  DSP: 2,
+};
 
 const RecordsTable = ({
   tableData,
   isLoading,
   recordTabelType = RecordTabelType.BirthTabe,
-  recordTableOrganization = RecordTabelOrganizationType.Hospital
+  recordTableOrganization = RecordTabelOrganizationType.Hospital,
 }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const getStatusBadgeColor = (status) => {
     switch (status) {
@@ -37,30 +39,57 @@ const RecordsTable = ({
 
   const approveRecord = async (record) => {
     try {
-      const path = recordTabelType == RecordTabelType.BirthTabe ?
-        API_PATHS.RECORDS.ASP.APPROVE_BIRTH_RECORD :
-        API_PATHS.RECORDS.ASP.APPROVE_DEATH_RECORD;
+      const path =
+        recordTabelType == RecordTabelType.BirthTabe
+          ? API_PATHS.RECORDS.ASP.APPROVE_BIRTH_RECORD
+          : API_PATHS.RECORDS.ASP.APPROVE_DEATH_RECORD;
 
-      await axoisInstance.post(path + record._id)
-      navigate(0)
+      await axoisInstance.post(path + record._id);
+      navigate(0);
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
   const rejectRecord = async (record) => {
     try {
-      const path = recordTabelType == RecordTabelType.BirthTabe ?
-        API_PATHS.RECORDS.ASP.REJECT_BIRTH_RECORD :
-        API_PATHS.RECORDS.ASP.REJECT_DEATH_RECORD;
+      const path =
+        recordTabelType == RecordTabelType.BirthTabe
+          ? API_PATHS.RECORDS.ASP.REJECT_BIRTH_RECORD
+          : API_PATHS.RECORDS.ASP.REJECT_DEATH_RECORD;
 
-      await axoisInstance.post(path + record._id)
-      navigate(0)
+      await axoisInstance.post(path + record._id);
+      navigate(0);
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
+  // Download PDF
+  const handleDownloadPDF = async (id) => {
+    try {
+      let path;
+      if (recordTabelType == RecordTabelType.BirthTabe) {
+        path = API_PATHS.EXPORT_PDF.BIRTH(id);
+      } else {
+        path = API_PATHS.EXPORT_PDF.DEATH(id);
+      }
+
+      const response = await axoisInstance.get(path, { responseType: "blob" });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "birth_record.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.parentElement.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error Download Task Report : ", error);
+      toast.error("Failed to download PDF file. Please try again.");
+    }
+  };
   return (
     <div className="overflow-x-auto p-0 rounded-lg mt-3">
       <table className="min-w-full">
@@ -87,16 +116,21 @@ const RecordsTable = ({
                 Death Date
               </th>
             ) : null}
-            {recordTableOrganization != RecordTabelOrganizationType.DSP ?
+            {recordTableOrganization != RecordTabelOrganizationType.DSP ? (
               <th className="py-3 px-4 text-gray-800 font-medium text-[13px] hidden md:table-cell">
                 Status
-              </th> : null}
+              </th>
+            ) : null}
           </tr>
         </thead>
         <tbody>
-          {isLoading && <tr className="border-t border-gray-200 text-center">
-            <td className="p-4" colSpan={5}>Loading...</td>
-          </tr>}
+          {isLoading && (
+            <tr className="border-t border-gray-200 text-center">
+              <td className="p-4" colSpan={5}>
+                Loading...
+              </td>
+            </tr>
+          )}
           {tableData.map((user) => (
             <tr key={user._id} className="border-t border-gray-200">
               <td className="p-4">
@@ -127,12 +161,13 @@ const RecordsTable = ({
 
               {recordTabelType == RecordTabelType.DeathTabel ? (
                 <td className="p-4 text-gray-700 text-[13px] text-nowrap hidden md:table-cell">
-                  {user.DateOfDeath ? moment(user.DateOfDeath).format("Do MMM YYYY")
+                  {user.DateOfDeath
+                    ? moment(user.DateOfDeath).format("Do MMM YYYY")
                     : "N/A"}
                 </td>
               ) : null}
 
-              {recordTableOrganization != RecordTabelOrganizationType.DSP ?
+              {recordTableOrganization != RecordTabelOrganizationType.DSP ? (
                 <td className="p-4">
                   <span
                     className={`${getStatusBadgeColor(
@@ -141,23 +176,44 @@ const RecordsTable = ({
                   >
                     {user.Status}
                   </span>
-                </td> : null}
+                </td>
+              ) : null}
 
-              {
-                recordTableOrganization == RecordTabelOrganizationType.ASP
-                  && user.Status == "pending" ?
-                  (<td className="w-1">
-                    <div className="flex gap-2 justify-center items-center me-2">
-                      <button onClick={() => { approveRecord(user) }} className="text-green-600 hover:text-green-800 cursor-pointer">
-                        <LuCheck size={25} />
-                      </button>
-                      <button onClick={() => { rejectRecord(user) }} className="text-red-600 hover:text-red-800 cursor-pointer">
-                        <LuX size={25} />
-                      </button>
-                    </div>
-                  </td>) : null
-              }
-
+              {recordTableOrganization == RecordTabelOrganizationType.ASP &&
+              user.Status == "pending" ? (
+                <td className="w-1">
+                  <div className="flex gap-2 justify-center items-center me-2">
+                    <button
+                      onClick={() => {
+                        approveRecord(user);
+                      }}
+                      className="text-green-600 hover:text-green-800 cursor-pointer"
+                    >
+                      <LuCheck size={25} />
+                    </button>
+                    <button
+                      onClick={() => {
+                        rejectRecord(user);
+                      }}
+                      className="text-red-600 hover:text-red-800 cursor-pointer"
+                    >
+                      <LuX size={25} />
+                    </button>
+                  </div>
+                </td>
+              ) : recordTableOrganization == RecordTabelOrganizationType.ASP &&
+                user.Status == "verified" ? (
+                <td className="w-1">
+                  <div className="flex justify-center items-center me-2">
+                    <button
+                      onClick={() => handleDownloadPDF(user._id)}
+                      className="text-red-600 hover:text-red-800 cursor-pointer"
+                    >
+                      <FaRegFilePdf size={20} />
+                    </button>
+                  </div>
+                </td>
+              ) : null}
             </tr>
           ))}
         </tbody>
