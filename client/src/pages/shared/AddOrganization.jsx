@@ -24,6 +24,7 @@ function AddOrganization({
   const clearData = () => {
     setHospitalName({
       name: "",
+      email: "",
     });
   };
 
@@ -66,7 +67,7 @@ function AddOrganization({
 
             <div className="mt-4">
               <label className="text-xs font-medium text-slate-600">
-                name:
+               Full name:
               </label>
 
               <input
@@ -74,6 +75,19 @@ function AddOrganization({
                 className="form-input"
                 value={hospitalName.name}
                 onChange={(e) => handleValueChange("name", e.target.value)}
+              />
+            </div>
+
+            <div className="mt-4">
+              <label className="text-xs font-medium text-slate-600">
+                Admin Email :
+              </label>
+
+              <input
+                placeholder="Email"
+                className="form-input"
+                value={hospitalName.email}
+                onChange={(e) => handleValueChange("email", e.target.value)}
               />
             </div>
 

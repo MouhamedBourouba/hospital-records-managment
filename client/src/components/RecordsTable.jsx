@@ -131,7 +131,7 @@ const RecordsTable = ({
               </td>
             </tr>
           )}
-          {tableData.map((user) => (
+          {tableData.length > 0 ? tableData.map((user) => (
             <tr key={user._id} className="border-t border-gray-200">
               <td className="p-4">
                 <span className="my-3 mx-4 text-gray-700 text-[13px] line-clamp-1 overflow-hidden">
@@ -215,7 +215,11 @@ const RecordsTable = ({
                 </td>
               ) : null}
             </tr>
-          ))}
+          )) : !isLoading && <tr className="border-t border-gray-200 text-center">
+          <td className="p-4" colSpan={5}>
+            No data available
+          </td>
+        </tr>}
         </tbody>
       </table>
     </div>
