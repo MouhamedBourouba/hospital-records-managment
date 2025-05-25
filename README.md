@@ -1,7 +1,4 @@
 # Records Management System
-
-A robust backend API system for managing birth and death records with anonymous data handling, authentication, and real-time event notifications.
-
 ## Table of Contents
 
 - [Overview](#overview)
